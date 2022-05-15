@@ -1,0 +1,133 @@
+@import url("header.css");
+
+body{
+    margin: 0;
+    padding: 0;
+    background-image: url(../images/bike-login-bg.png);
+    background-size: cover;                      
+    
+  
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--black2);
+}
+
+:root{
+    --blue: #287bff;
+    --white: #fff;
+    --violet: #7380ec;
+    --grey: #f5f5f5;
+    --black1: #222;
+    --black2: #999;
+    --red: #ff7782; 
+    --gradient:  linear-gradient(45deg, #287bff, #fff);
+}
+
+
+header{
+    background-color: red;
+}
+
+header a{
+    text-decoration: none;
+}
+
+
+.login-form{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--white);
+    border-radius: .8rem;
+    width: 300px;
+    
+       
+    justify-content: center;
+
+}
+
+
+
+.login-form .title{
+    text-align: center;
+    font-size: 35px;
+    font-weight: bold;
+    padding: 0 0 10px 0;
+}
+
+.login-form form{
+    padding: 0 15px;    
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+form input{
+    width: 70%;
+    height: 40px;
+    background-color: rgb(209, 209, 209);
+    margin: 8px;
+    border-radius: .4rem;
+    outline: none;
+    border: none;
+    font-size: large;
+    
+    text-align: left;
+    padding-left: 15px;
+}
+
+#accedi-submit{
+    background-color: var(--violet);
+    color: var(--white);
+    font-weight: 500;
+}
+
+#registrati-submit{
+    background-color: var(--red);
+    margin-bottom: 30px;
+    font-weight: 500;
+    color:var(--white);
+}
+
+.button:hover{
+    transition: .3s;
+    transform: scale(1.05);
+}
+
+
+.err-message{
+    text-align: center;
+    font-size: larger;
+    font-weight: 600;
+    color: rgba(255, 0, 0, 0.784);
+}
+
+
+
+
+
+
+
+
+
+
+/*======================ANIMATIONS========================*/
+@keyframes shake {
+    0%, 20%, 40%, 60%, 80% {
+      transform: translateX(8px);
+    }
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+      transform: translateX(-8px);
+    }
+  }
+  
+  @keyframes glow-red {
+      
+    50% {
+      border-color: indianred;
+    }
+  }
