@@ -30,10 +30,13 @@ app.use(express.static(path.join(__dirname, "/public")))
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth')
+
 //ROUTES
 app.use('/', indexRouter)
 app.use('/users', usersRouter);
 app.use('/auth', authRouter)
+app.use('/api/v1/users', usersRouter);
+//app.use('/api/v1/authentications', authentication);
 
 app.patch('/test', (req, res) => {
     console.log(req.body)

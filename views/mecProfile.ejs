@@ -23,7 +23,7 @@
         />
         <div class="name">
             
-            <%= user.nome %> <%= user.cognome %>
+          <span id="nome-cognome"><%= user.nome %> <%= user.cognome %></span>
             
             <div>
                 <input class="update-info" type="text" name="" id="update-nome-input">
@@ -52,20 +52,43 @@
           </div>
           <div class="buttons">
             <button id="info-modify-btn">Modifica</button>
+            <!--  <img src="/images/edit-png.png" alt=""> -->
+            <img src="" alt="">
             <button id="info-confirm-btn" class="confirm-btn">Conferma</button>
             
           </div>
         </div>
+
+        
+        <div class="orario-info card">
+          <div class="grp">
+            <span class="title">ORARIO</span>
+          </div>
+          
+          <div class="grp">
+            <span class="title">E-BIKE</span>
+            <input class="update-info" id="add-ebike-input" type="text" name="" >
+            <span class="content">
+              <% user.ebikes.forEach(ebike => { %> 
+              <p><%= ebike %></p> 
+              <% }) %>
+            </span>
+          </div>
+
+          <div class="buttons">
+            <!-- <button id="bike-modify-btn">Modifica</button>
+            <button id="bike-confirm-btn" class="confirm-btn">Conferma</button> -->
+          </div>
+        </div>
+
         <div class="bike-info card">
           <div class="grp">
             <span class="title">BIKE</span>
             <input class="update-info" id="add-bike-input" type="text" name="">
             <span class="content">
-              
                     <% user.bikes.forEach(bike => { %> 
                         <p><%= bike %></p> 
                     <% }) %>
-                
                 
             </span>
           </div>
@@ -79,13 +102,11 @@
             </span>
           </div>
           <div class="buttons">
+
             <!-- <button id="bike-modify-btn">Modifica</button>
             <button id="bike-confirm-btn" class="confirm-btn">Conferma</button> -->
           </div>
         </div>
-      </div>
-      <div class="links">
-        <a href="/storico">Storico prenotazioni</a>
       </div>
     </div>
 

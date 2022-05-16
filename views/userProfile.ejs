@@ -22,9 +22,9 @@
           alt=""
         />
         <div class="name">
+            <span id="nome-cognome"><%= user.nome %> <%= user.cognome %></span>
             
-            <%= user.nome %> <%= user.cognome %>
-            
+
             <div>
                 <input class="update-info" type="text" name="" id="update-nome-input">
                 <input class="update-info" type="text" name="" id="update-cognome-input">
@@ -51,7 +51,7 @@
             <!-- <input class="update-info" type="text" name="" id="update-email-input"> -->
           </div>
           <div class="buttons">
-            <button id="info-modify-btn">Modifica</button>
+            <button id="info-modify-btn" class="modify-btn">Modifica</button>
             <button id="info-confirm-btn" class="confirm-btn">Conferma</button>
             
           </div>
@@ -59,24 +59,25 @@
         <div class="bike-info card">
           <div class="grp">
             <span class="title">BIKE</span>
-            <input class="update-info" id="add-bike-input" type="text" name="">
             <span class="content">
               
-                    <% user.bikes.forEach(bike => { %> 
-                        <p><%= bike %></p> 
-                    <% }) %>
+              <% user.bikes.forEach(bike => { %> 
+                <p><%= bike %></p> 
+                <% }) %>
                 
                 
-            </span>
+              </span>
+              <input class="update-info" id="add-bike-input" type="text" name="">
           </div>
           <div class="grp">
             <span class="title">E-BIKE</span>
-            <input class="update-info" id="add-ebike-input" type="text" name="" >
+            
             <span class="content">
               <% user.ebikes.forEach(ebike => { %> 
-              <p><%= ebike %></p> 
-              <% }) %>
-            </span>
+                <p><%= ebike %></p> 
+                <% }) %>
+              </span>
+              <input class="update-info" id="add-ebike-input" type="text" name="" >
           </div>
           <div class="buttons">
             <!-- <button id="bike-modify-btn">Modifica</button>
@@ -93,6 +94,6 @@
       type="text/javascript"
       src="http://code.jquery.com/jquery-latest.min.js"
     ></script>
-    <script type="text/javascript" src="javascripts/index.js"></script>
+    <script type="text/javascript" src="javascripts/script.js"></script>
   </body>
 </html>

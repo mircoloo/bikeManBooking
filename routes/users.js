@@ -7,14 +7,15 @@ const User = require('../models/user')
 //getting all users
 router.get('/', async (req, res) => {
     try{
-        const users = await User.find().select('-password')
+        //const users = await User.find().select('-password')
+        const users = await User.find() 
         res.json(users)
     } catch (err){
         res.status(500).json({ message : err.message})
     }
 });
 //getting one user
-router.get('/:id', getUser,(req, res) => {
+router.get('/:id', getUser, async (req, res) => {
     res.send(res.user)
 });
 
@@ -62,7 +63,6 @@ router.patch('/:email', getUser, async (req, res) => {
     }
 
     try{
-        
         const updateUser = await res.user.save()
         res.json(updateUser)
     }catch(err){
@@ -85,6 +85,7 @@ router.delete('/:email', getUser,async (req, res) => {
 //================ Middleware ======================
 async function getUser(req, res, next){
     let user;
+    console.log(user)
     try{
         user = await User.findOne({email:req.params.email})
         console.log(user)
