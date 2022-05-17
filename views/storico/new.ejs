@@ -1,8 +1,9 @@
-
 <h2>Prenota la tua manutenzione</h2>
 <form action="/storico" method="POST">
-    <label>Data</label>
-    <input type="date" name="dataPrenotazione" value="<%= prenotazione.dataPrenotazione %>"></input>
+    <label>Data </label><input type="date" name="data" value="<%= prenotazione.data %>"></input><br>
+    <label>Utente </label><input type="text" name="utente" value="<%= prenotazione.utente%>"></input><br>
+    <label>Problema </label><input type="text" name="problema" value="<%= prenotazione.problema%>"></input><br>
+    <label>Bici </label><input type="text" name="bici" value="<%= prenotazione.bici%>"></input><br>
     <a href="/storico">Annulla</a>
     <button type="submit">Crea prenotazione</button>
 </form>
