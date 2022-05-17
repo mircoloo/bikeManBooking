@@ -10,7 +10,6 @@ router.post('/', async (req, res) => {
     switch(req.body.submit){
         case 'Accedi':
             user = await User.findOne({email: email})
-            console.log(user.client)
             if(user && user.password == password){
                 if(user.client == true){
                     res.render("userProfile", {user: user});
@@ -35,7 +34,7 @@ router.post('/', async (req, res) => {
                     surname: "",
                     bikes: [],
                     ebikes: [],
-                    indirizzo: String,
+                    indirizzo: "",
                     client: true
 
                 })

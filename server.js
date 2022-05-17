@@ -11,6 +11,7 @@ const port = process.env.PORT || 3000
 const app = express()
 
 //MIDDLEWARES
+app.use('/public', express.static("public"));
 app.use("/styles",  express.static(__dirname + '/public/stylesheets'));
 app.use("/scripts", express.static(__dirname + '/public/javascripts'));
 app.use("/images",  express.static(__dirname + '/public/images'));
@@ -27,13 +28,20 @@ app.use(express.static(path.join(__dirname, "/public")))
 
 
 //ROUTER
-const indexRouter = require('./routes/index')
+const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const authRouter = require('./routes/auth')
+const authRouter = require('./routes/auth');
+const authenticationRouter = require('./routes/authenticate')
+const tokenChecker = require('./routes/tokenChecker')
+
 //ROUTES
 app.use('/', indexRouter)
-app.use('/users', usersRouter);
-app.use('/auth', authRouter)
+//app.use('/users', usersRouter);
+//app.use('/auth', authRouter)
+app.use('/api/v1/users', tokenChecker);
+app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/authenticate', authenticationRouter)
+//app.use('/api/v1/authentications', authentication);
 
 app.patch('/test', (req, res) => {
     console.log(req.body)
