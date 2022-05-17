@@ -39,7 +39,8 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     try{
         const prenot = await Prenotazione.find({})
-        res.render('storico/index', { prenotazione: Prenotazione })
+        //res.send(prenot.data)
+        res.render('storico/index', { prenotazione : prenot  })
         //res.render('storico/index')
     } catch {
         res.send('errore nel caricamento della pagina storico')
