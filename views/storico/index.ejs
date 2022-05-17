@@ -25,7 +25,7 @@
     <th>Problema</th>
     <th>Bici</th>    
     <th>Cancella</th>
-
+<!--
     </tr>
 
     <tr>
@@ -70,8 +70,11 @@
     <td>Italy</td>
     <td>Germany</td> 
     <th><button>Cancella</button></th>
+  -->
     </tr>
 
 </table>
 <br>
-ciao    
+<%- prenotazione.forEach(pren =>{ %>
+  <div><%= pren.data %></div>
+<%- }) %>

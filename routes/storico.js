@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
         bici: req.body.bici
     })
     try{
-        //const newPrenotazione = await pren.save()
+        const newPrenotazione = await pren.save()
         res.render('storico/')
         //res.redirect('/')
         //res.send(req.body)
@@ -39,8 +39,8 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     try{
         const prenot = await Prenotazione.find({})
-        //res.render('storico/index', { prenotazione: prenotazione })
-        res.render('storico/index')
+        res.render('storico/index', { prenotazione: Prenotazione })
+        //res.render('storico/index')
     } catch {
         res.send('errore nel caricamento della pagina storico')
         //res.redirect('/')
