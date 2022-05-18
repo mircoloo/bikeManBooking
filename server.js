@@ -32,13 +32,13 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const authenticationRouter = require('./routes/authenticate')
-const tokenChecker = require('./routes/tokenChecker')
+const {authenticateToken} = require('./routes/tokenChecker')
 
 //ROUTES
 app.use('/', indexRouter)
 //app.use('/users', usersRouter);
 //app.use('/auth', authRouter)
-app.use('/api/v1/users', tokenChecker);
+//app.use('/api/v1/users', tokenChecker);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/authenticate', authenticationRouter)
 //app.use('/api/v1/authentications', authentication);

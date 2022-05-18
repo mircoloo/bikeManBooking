@@ -6,26 +6,24 @@ require("dotenv").config();
 
 router.post("/", async function (req, res) {
     let user;
-    console.log(req.body)
   try {
     switch (req.body.submit) {
       case "Accedi":
         user = await User.findOne({ email: req.body.email }).exec();
         console.log(user);
         if (!user) {
-          var messageError = "Credenziali non valide";
-          res.render("login", { error: messageError });
+          res.render("login", { error: "Credenziali non valide" });
           //res.json({ success: false, message: "User not found" });
         }
         if (user.password != req.body.password) {
-          res.json({ success: false, message: "Wrong password" });
+          res.render('login', {error: "Password sbagliata"});
         }
         // Building JWT
         var payload = {
           email: user.email,
           id: user._id,
         };
-        var options = { expiresIn: 86400 }; // expires in 24 hours
+        var options = { expiresIn: 3600 }; // expires in 1 hours
         var token = jwt.sign(payload, process.env.SUPER_SECRET, options);
 
         jsonres = {
@@ -36,12 +34,28 @@ router.post("/", async function (req, res) {
           id: user._id,
           self: "api/v1/users/" + user.email,
         };
-        //res.send("ciao")
-        res.render("userProfile", { user: user, res: jsonres });
+        user.token = token;
+        user.save();
+        if(user.client == true){
+            res.render("userProfile", { user: user, res: jsonres });
+        }else{
+            res.render("mecProfile", { user: user, res: jsonres });
+        }
+        
         break;
 
       case "Registrati":
         user = await User.findOne({ email: req.body.email });
+        
+        // Building JWT
+        var payload = {
+          email: user.email,
+          password: user.password,
+          id: user._id,
+        };
+        var options = { expiresIn: 3600 }; // expires in 1 hours
+          var token = jwt.sign(payload, process.env.SUPER_SECRET, options);
+          const newUser = await user.save();
         if (!user) {
           const user = new User({
             email: req.body.email,
@@ -52,18 +66,13 @@ router.post("/", async function (req, res) {
             ebikes: [],
             indirizzo: "",
             client: true,
+            token: token
           });
 
-          // Building JWT
-          var payload = {
-            email: user.email,
-            password: user.password,
-            id: user._id,
-          };
-          var options = { expiresIn: 86400 }; // expires in 24 hours
-          var token = jwt.sign(payload, process.env.SUPER_SECRET, options);
-          const newUser = await user.save();
+          
+          
           res.render("userProfile", { user: newUser, token: token });
+          
           
 
         } else {

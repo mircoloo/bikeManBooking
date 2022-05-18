@@ -3,7 +3,7 @@ const { update } = require('../models/user');
 const router = express.Router()
 const User = require('../models/user')
 const jwt = require("jsonwebtoken");
-
+    const {authToken} = require("./tokenChecker");
 
 //getting all users
 router.get('/getAll', async (req, res) => {
@@ -39,38 +39,43 @@ router.post('/', async (req, res) => {
 
 //updating one user
 router.patch('/:email', getUser, async (req, res) => {
-    console.log(req.params)
-    if(req.body.email != null){
-        res.user.email = req.body.email
+    if(authToken(res.user) == true){
+        if(req.body.email != null){
+            res.user.email = req.body.email
+        }
+        if(req.body.password != null){
+            res.user.password = req.body.password
+        }
+        if(req.body.nome != null){
+            res.user.nome = req.body.nome
+        }
+        if(req.body.cognome != null){
+            res.user.cognome = req.body.cognome
+        }
+        if(req.body.telefono != null){
+            res.user.telefono = req.body.telefono
+        }
+        if(req.body.indirizzo != null){
+            res.user.indirizzo = req.body.indirizzo
+        }
+        if(req.body.bikes != null){
+            res.user.bikes.push(req.body.bikes)
+        }
+        if(req.body.ebikes != null){
+            res.user.ebikes.push(req.body.ebikes)
+        }
+    
+        try{
+            const updateUser = await res.user.save()
+            res.json(updateUser)
+        }catch(err){
+            res.status(400).json({message: error.message})
+        }
+    }else{
+        res.send("non valido")
     }
-    if(req.body.password != null){
-        res.user.password = req.body.password
-    }
-    if(req.body.nome != null){
-        res.user.nome = req.body.nome
-    }
-    if(req.body.cognome != null){
-        res.user.cognome = req.body.cognome
-    }
-    if(req.body.telefono != null){
-        res.user.telefono = req.body.telefono
-    }
-    if(req.body.indirizzo != null){
-        res.user.indirizzo = req.body.indirizzo
-    }
-    if(req.body.bikes != null){
-        res.user.bikes.push(req.body.bikes)
-    }
-    if(req.body.ebikes != null){
-        res.user.ebikes.push(req.body.ebikes)
-    }
-
-    try{
-        const updateUser = await res.user.save()
-        res.json(updateUser)
-    }catch(err){
-        res.status(400).json({message: error.message})
-    }
+    
+    
 });
 
 //deleting one user
@@ -90,7 +95,7 @@ async function getUser(req, res, next){
     let user;
     try{
         user = await User.findOne({email:req.params.email})
-        console.log(user)
+        //console.log(user)
         if(user == null){
             return res.status(404).json({message: 'cannot find the user'})
         }
@@ -100,5 +105,10 @@ async function getUser(req, res, next){
     res.user = user
     next()
 }
+
+
+
+
+
 
 module.exports = router
