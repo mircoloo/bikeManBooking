@@ -33,7 +33,6 @@
     <th>Utente</th>
     <th>Problema</th>
     <th>Bici</th>    
-    <th>Cancella</th>
 
     </tr>
 <% prenotazione.forEach( p => { %>
@@ -42,11 +41,6 @@
     <td><%= p.utente %></td>
     <td><%= p.problema %></td>
     <td><%= p.bici %></td> 
-    <% if(p.data > Date.now()){ %>
-      <td><button>Cancella</button></td>
-    <% } else { %>
-      <td><%= Date.now() %></td>
-    <% } %>
   </tr>
 <% }) %>
 
