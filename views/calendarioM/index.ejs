@@ -1,0 +1,54 @@
+<!-- PAGINA DALLA QUALE L'UTENTE SELEZIONA LA DATA-->
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 80%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+</style>
+</head>
+
+<h2>Trova prenotazioni per giorno</h2>
+<form action="/calendario" method="GET">
+    <label>Seleziona la data</label>
+    <!-- <input type="text" name="utente" value="<%= searchOptions.utente %>"></input>  -->
+    <input type="date" name="data" value="<%= searchOptions.data %>"></input> 
+    <button>Stampa prenotazioni</button>
+</form>
+<body>
+    <h2>Storico manutenzioni</h2>
+<table>    
+    <tr>
+    <th>Data prenotazione</th>
+    <th>Utente</th>
+    <th>Problema</th>
+    <th>Bici</th>    
+    <th>Cancella</th>
+
+    </tr>
+<% prenotazione.forEach( p => { %>
+  <tr>
+    <td><%= p.data %></td>
+    <td><%= p.utente %></td>
+    <td><%= p.problema %></td>
+    <td><%= p.bici %></td> 
+    <% if(p.data > Date.now()){ %>
+      <td><button>Cancella</button></td>
+    <% } else { %>
+      <td><%= Date.now() %></td>
+    <% } %>
+  </tr>
+<% }) %>
+
+</table>
+</body>
