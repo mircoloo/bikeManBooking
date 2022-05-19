@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const User = require('../models/user')
 var bcrypt = require('bcrypt');
+const {tokenGenFun} = require('./tokenGen')
 
 router.post('/', async (req, res) => {
     let user;
@@ -10,33 +11,34 @@ router.post('/', async (req, res) => {
     switch(req.body.submit){
         case 'Accedi':
             user = await User.findOne({email: email})
-            if(user && user.password == password){
+            if(user && user.password && bcrypt.compare(password, user.password)){
+                //console.log(tokenGenFun(user), password, user.password)
                 if(user.client == true){
                     res.render("userProfile", {user: user});
                 }else if(user.client == false){
                     res.render("mecProfile", {user: user});
-                    //res.json({ciao: "2"})
-                    //res.send("Pagina meccanico")
-                }
+                }else{
+                    res.render('errors', {error: "Si è verificato un errore nel login"})
+                  }
             }else{
-                //res.redirect("/?valid=false");
-                var messageError = "Credenziali non valide"
-                res.render('login', {error: messageError})
+                res.render('login', {error: "Credenziali non valide"})
             }
             break;
         case 'Registrati':
             user = await User.findOne({email: email})
             if(!user){
+                const salt = await bcrypt.genSalt(10);
+                // now we set user password to hashed password
+                const hashedPassword = await bcrypt.hash(req.body.password, salt);
                 const user = new User({
                     email: req.body.email,
-                    password: req.body.password,
+                    password: hashedPassword,
                     name: "",
                     surname: "",
                     bikes: [],
                     ebikes: [],
                     indirizzo: "",
                     client: true
-
                 })
                 const newUser = await user.save();
                 res.render("userProfile", {user: newUser});

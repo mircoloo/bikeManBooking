@@ -5,7 +5,7 @@ require('dotenv').config()
 const dbURI = process.env.DATABASE_URL
 const localURI = "mongodb://localhost:27017/isDB"
 try{
-    mongoose.connect(dbURI)
+    mongoose.connect(localURI)
     console.log('connected to db');
 }catch(error){
     console.log(error)

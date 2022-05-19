@@ -10,14 +10,13 @@ router.post("/", async function (req, res) {
     switch (req.body.submit) {
       case "Accedi":
         user = await User.findOne({ email: req.body.email }).exec();
-        console.log(user);
         if (!user) {
           res.render("login", { error: "Credenziali non valide" });
-          //res.json({ success: false, message: "User not found" });
         }
         if (user.password != req.body.password) {
           res.render('login', {error: "Password sbagliata"});
         }
+        //Right autentication
         // Building JWT
         var payload = {
           email: user.email,
@@ -25,21 +24,23 @@ router.post("/", async function (req, res) {
         };
         var options = { expiresIn: 3600 }; // expires in 1 hours
         var token = jwt.sign(payload, process.env.SUPER_SECRET, options);
-
         jsonres = {
           success: true,
           message: "Enjoy your token!",
           token: token,
           email: user.email,
           id: user._id,
-          self: "api/v1/users/" + user.email,
         };
         user.token = token;
         user.save();
+
+
         if(user.client == true){
             res.render("userProfile", { user: user, res: jsonres });
-        }else{
+        }else if(user.client == false){
             res.render("mecProfile", { user: user, res: jsonres });
+        }else{
+          res.render('errors', {error: "Si è verificato un errore nel login"})
         }
         
         break;
@@ -47,16 +48,16 @@ router.post("/", async function (req, res) {
       case "Registrati":
         user = await User.findOne({ email: req.body.email });
         
-        // Building JWT
+          const newUser = await user.save();
+        if (!user) { //L'utente non esiste nel database
+          // Building JWT
         var payload = {
           email: user.email,
           password: user.password,
           id: user._id,
         };
-        var options = { expiresIn: 3600 }; // expires in 1 hours
+          var options = { expiresIn: 3600 }; // expires in 1 hours
           var token = jwt.sign(payload, process.env.SUPER_SECRET, options);
-          const newUser = await user.save();
-        if (!user) {
           const user = new User({
             email: req.body.email,
             password: req.body.password,
@@ -66,18 +67,10 @@ router.post("/", async function (req, res) {
             ebikes: [],
             indirizzo: "",
             client: true,
-            token: token
           });
-
-          
-          
           res.render("userProfile", { user: newUser, token: token });
-          
-          
-
         } else {
-          var messageError = "Email già presente";
-          res.render("login", { error: messageError });
+          res.render("login", { error: "Email già presente" });
         }
         break;
     }

@@ -39,7 +39,6 @@ router.post('/', async (req, res) => {
 
 //updating one user
 router.patch('/:email', getUser, async (req, res) => {
-    if(authToken(res.user) == true){
         if(req.body.email != null){
             res.user.email = req.body.email
         }
@@ -71,11 +70,6 @@ router.patch('/:email', getUser, async (req, res) => {
         }catch(err){
             res.status(400).json({message: error.message})
         }
-    }else{
-        res.send("non valido")
-    }
-    
-    
 });
 
 //deleting one user
@@ -94,7 +88,7 @@ router.delete('/:email', getUser,async (req, res) => {
 async function getUser(req, res, next){
     let user;
     try{
-        user = await User.findOne({email:req.params.email})
+        user = await User.findOne({email: req.params.email})
         //console.log(user)
         if(user == null){
             return res.status(404).json({message: 'cannot find the user'})

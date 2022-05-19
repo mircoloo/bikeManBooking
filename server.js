@@ -34,22 +34,20 @@ const authRouter = require('./routes/auth');
 const authenticationRouter = require('./routes/authenticate')
 const {authenticateToken} = require('./routes/tokenChecker')
 
+
 //ROUTES
 app.use('/', indexRouter)
-//app.use('/users', usersRouter);
-//app.use('/auth', authRouter)
+
 //app.use('/api/v1/users', tokenChecker);
 app.use('/api/v1/users', usersRouter);
-app.use('/api/v1/authenticate', authenticationRouter)
-//app.use('/api/v1/authentications', authentication);
 
-app.patch('/test', (req, res) => {
-    console.log(req.body)
-    res.send(req.body)
-})
+
+app.use('/api/v1/authenticate', authRouter)
+
+
 
 
 app.listen(port, () => {
-    console.log(`Listening on port ${port}`)
+    console.log(`Server is istening on port ${port}`)
 });
 
