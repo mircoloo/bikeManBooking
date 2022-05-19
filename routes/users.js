@@ -3,13 +3,10 @@ const { update } = require('../models/user');
 const router = express.Router()
 const User = require('../models/user')
 const jwt = require("jsonwebtoken");
-    const {authToken} = require("./tokenChecker");
 
 //getting all users
 router.get('/getAll', async (req, res) => {
-    
     try{
-        //const users = await User.find().select('-password')
         const users = await User.find() 
         res.json(users)
     } catch (err){
@@ -22,7 +19,6 @@ router.get('/:email', getUser,async (req, res) => {
 });
 
 //creating one user
-
 router.post('/', async (req, res) => {
     const user = new User({
         email: req.body.email,
@@ -63,7 +59,6 @@ router.patch('/:email', getUser, async (req, res) => {
         if(req.body.ebikes != null){
             res.user.ebikes.push(req.body.ebikes)
         }
-    
         try{
             const updateUser = await res.user.save()
             res.json(updateUser)
@@ -73,7 +68,6 @@ router.patch('/:email', getUser, async (req, res) => {
 });
 
 //deleting one user
-
 router.delete('/:email', getUser,async (req, res) => {
     try{
         await res.user.remove()
@@ -89,7 +83,6 @@ async function getUser(req, res, next){
     let user;
     try{
         user = await User.findOne({email: req.params.email})
-        //console.log(user)
         if(user == null){
             return res.status(404).json({message: 'cannot find the user'})
         }

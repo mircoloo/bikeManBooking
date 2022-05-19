@@ -4,6 +4,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 require('dotenv').config()
 require('./scripts/dbConnection')
+const cookieParser = require('cookie-parser')
 const expressLayouts = require('express-ejs-layouts') 
 
 
@@ -25,14 +26,13 @@ app.set('views', __dirname + '/views')
 app.set('layout', 'layouts/layout')
 app.use(expressLayouts)
 app.use(express.static(path.join(__dirname, "/public")))
-
+app.use(cookieParser());
 
 //ROUTER
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
-const authenticationRouter = require('./routes/authenticate')
-const {authenticateToken} = require('./routes/tokenChecker')
+const {authenticateToken} = require('./routes/jwt')
 
 
 //ROUTES
@@ -46,7 +46,9 @@ app.use('/api/v1/authenticate', authRouter)
 
 
 
-
+app.use( (req, res) =>{
+    res.status(404).render('errors', {error: "Pagina non trovata"});
+} )
 app.listen(port, () => {
     console.log(`Server is istening on port ${port}`)
 });

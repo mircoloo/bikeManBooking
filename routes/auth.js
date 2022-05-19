@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const User = require('../models/user')
 var bcrypt = require('bcrypt');
-const {tokenGenFun} = require('./tokenGen')
+const {generateToken, checkToken} = require('./jwt')
 
 router.post('/', async (req, res) => {
     let user;
@@ -14,6 +14,9 @@ router.post('/', async (req, res) => {
             if(user && user.password && bcrypt.compare(password, user.password)){
                 //console.log(tokenGenFun(user), password, user.password)
                 if(user.client == true){
+                    //res.status(200).send(generateToken(user))
+                    token = generateToken(user)
+                    //console.log(checkToken(user, token))
                     res.render("userProfile", {user: user});
                 }else if(user.client == false){
                     res.render("mecProfile", {user: user});
@@ -43,10 +46,8 @@ router.post('/', async (req, res) => {
                 const newUser = await user.save();
                 res.render("userProfile", {user: newUser});
             }else{
-                var messageError = "Email già presente"
-                res.render('login', {error: messageError})
+                res.render('login', {error: "Email già presente"})
             }
-            
             break;
     }   
 
