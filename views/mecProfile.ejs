@@ -23,7 +23,7 @@
         />
         <div class="name">
             
-          <span id="nome-cognome"><%= user.nome %> <%= user.cognome %></span>
+          <span id="nome-cognome"></span>
             
             <div>
                 <input class="update-info" type="text" name="" id="update-nome-input">
@@ -37,17 +37,17 @@
         <div class="personal-info card">
           <div class="grp">
             <span class="title">INDIRIZZO</span>
-            <span class="content"><%= user.indirizzo %></span>
+            <span class="content"></span>
             <input class="update-info" type="text" name="" id="update-indirizzo-input">
           </div>
           <div class="grp">
             <span class="title">TELEFONO</span>
-            <span class="content"><%= user.telefono %></span>
+            <span class="content"></span>
             <input class="update-info" type="text" name="" id="update-telefono-input">
           </div>
           <div class="grp">
             <span class="title">EMAIL</span>
-            <span class="content" id="email-span"><%= user.email %></span>
+            <span class="content" id="email-span"></span>
             <!-- <input class="update-info" type="text" name="" id="update-email-input"> -->
           </div>
           <div class="buttons">
@@ -69,9 +69,9 @@
             <span class="title">E-BIKE</span>
             <input class="update-info" id="add-ebike-input" type="text" name="" >
             <span class="content">
-              <% user.ebikes.forEach(ebike => { %> 
-              <p><%= ebike %></p> 
-              <% }) %>
+              
+              <p></p> 
+              
             </span>
           </div>
 
@@ -86,9 +86,7 @@
             <span class="title">BIKE</span>
             <input class="update-info" id="add-bike-input" type="text" name="">
             <span class="content">
-                    <% user.bikes.forEach(bike => { %> 
-                        <p><%= bike %></p> 
-                    <% }) %>
+
                 
             </span>
           </div>
@@ -96,9 +94,7 @@
             <span class="title">E-BIKE</span>
             <input class="update-info" id="add-ebike-input" type="text" name="" >
             <span class="content">
-              <% user.ebikes.forEach(ebike => { %> 
-              <p><%= ebike %></p> 
-              <% }) %>
+
             </span>
           </div>
           <div class="buttons">

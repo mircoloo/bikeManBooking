@@ -29,22 +29,14 @@ app.use(express.static(path.join(__dirname, "/public")))
 app.use(cookieParser());
 
 //ROUTER
-const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const authRouter = require('./routes/auth');
-const {authenticateToken} = require('./routes/jwt')
+const indexRouter = require('./routes/index');
 
 
 //ROUTES
-app.use('/', indexRouter)
-
 //app.use('/api/v1/users', tokenChecker);
 app.use('/api/v1/users', usersRouter);
-
-
-app.use('/api/v1/authenticate', authRouter)
-
-
+app.use('/', indexRouter);
 
 app.use( (req, res) =>{
     res.status(404).render('errors', {error: "Pagina non trovata"});
