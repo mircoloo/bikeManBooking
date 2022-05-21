@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 const prenotazioneShema = new mongoose.Schema({
     data: {
         type: Date,
+        min: Date.now,
+        max: '2030-01-01',
         required: true
     },
     utente: {

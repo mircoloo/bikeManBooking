@@ -2,50 +2,41 @@ const express = require('express')
 const res = require('express/lib/response')
 const router = express.Router()
 const Prenotazione = require('../models/prenotazione')
-/*
-    per ora lo storico si occupa solo di fare una get di tutte
-    le prenotazioni associate ad un utente di id=x
-*/
 
-// metodo temporaneo solo per fare prove di aggiunta di prenotazione
-router.get('/new', (req, res) => {
-    res.render('storico/new', { prenotazione : new Prenotazione()})
-})
-
-router.post('/', async (req, res) => {
-    const pren = new Prenotazione({
-        data: req.body.data,
-        utente: req.body.utente,
-        problema: req.body.problema,
-        bici: req.body.bici
-    })
-    try{
-        const newPrenotazione = await pren.save()
-        res.render('storico/')
-        //res.redirect('/')
-        //res.send(req.body)
-    } catch {
-        res.send('errore')
-        /*
-        dres.render('storico/', {
-            pren : pren,
-            errorMessage: 'Errore nella creazione della prenotazione'
-        })
-        */
-    }
-})
-
-//
 router.get('/', async (req, res) => {
+    let searchOptions = {}
+    if(req.query.utente != null && req.query.utente !== ''){
+        searchOptions.utente = new RegExp(req.query.utente)
+    }
     try{
-        const prenot = await Prenotazione.find({})
-        //res.send(prenot.data)
-        res.render('storico/index', { prenotazione : prenot  })
-        //res.render('storico/index')
+        const prenot = await Prenotazione.find(searchOptions)
+        res.render('storico/index', { 
+            prenotazione : prenot, 
+            searchOptions: req.query
+        })
     } catch {
-        res.send('errore nel caricamento della pagina storico')
-        //res.redirect('/')
+        res.send('error ')
     }
 })
-    
+
+router.get('/:utente', (req, res) => {
+    res.send('Prenotazioni per l\'utente ' + req.params.utente)
+})
+
+router.delete('/:utente', async (req, res) => {
+    let pren
+    try{
+        pren = await Prenotazione.findOne({utente: req.params.utente})
+        await pren.remove()
+        res.redirect('/storico')
+    } catch {
+        if(pren == null){
+            res.send('prenotazione vuota')
+        } else{
+            //res.redirect('/storico')
+            res.send('Prenotazione non eliminata')
+        }
+    }
+})
+
 module.exports = router

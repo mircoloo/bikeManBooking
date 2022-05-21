@@ -16,8 +16,17 @@
     }
 </style>
 </head>
+
+<body>
+  <h2>Trova prenotazioni per giorno</h2>
+<form action="/storico" method="GET">
+    <label>Seleziona l'utente</label>
+    <input type="text" name="utente" value="<%= searchOptions.utente %>"></input> 
+    <button>Stampa prenotazioni</button>
+</form>
 <body>
     <h2>Storico manutenzioni</h2>
+
 <table>    
     <tr>
     <th>Data prenotazione</th>
@@ -25,56 +34,24 @@
     <th>Problema</th>
     <th>Bici</th>    
     <th>Cancella</th>
-<!--
-    </tr>
-
-    <tr>
-    <td>Alfreds Futterkiste</td>
-    <td>Maria Anders</td>
-    <td>Germany</td> 
-    <td>Germany</td>    
-    <td><button>Cancella</button></td>
 
     </tr>
-    <tr>
-    <td>Centro comercial Moctezuma</td>
-    <td>Francisco Chang</td>
-    <td>Mexico</td>    
-    <td>Germany</td> 
-    <td><button>Cancella</button></td>
-    </tr>
-    <tr>
-    <td>Ernst Handel</td>
-    <td>Roland Mendel</td>
-    <td>Austria</td>    
-    <td>Germany</td> 
-    <th><button>Cancella</button></th>
-    </tr>
-    <tr>
-    <td>Island Trading</td>
-    <td>Helen Bennett</td>
-    <td>UK</td>
-    <td>Germany</td> 
-    <th><button>Cancella</button></th>
-    </tr>
-    <tr>
-    <td>Laughing Bacchus Winecellars</td>
-    <td>Yoshi Tannamuri</td>
-    <td>Canada</td>    
-    <td>Germany</td> 
-    <th><button>Cancella</button></th>
-    </tr>
-    <tr>
-    <td>Magazzini Alimentari Riuniti</td>
-    <td>Giovanni Rovelli</td>
-    <td>Italy</td>
-    <td>Germany</td> 
-    <th><button>Cancella</button></th>
-  -->
-    </tr>
+<% prenotazione.forEach( p => { %>
+  <tr>
+    <td><%= p.data %></td>
+    <td><%= p.utente %></td>
+    <td><%= p.problema %></td>
+    <td><%= p.bici %></td> 
+    <% if(p.data > Date.now()){ %>
+      <td>
+        <form method="POST" action="/storico/<%= p.utente %>?_method=DELETE">
+          <button type="submit">Cancella</button>
+        </form>
+      </td>
+    <% } else { %>
+      <td></td>  
+    <% } %>
+  </tr>
+<% }) %>
 
 </table>
-<br>
-<% prenotazione.forEach( p => { %>
-  <div><%= p.data %></div>
-<% }) %>
