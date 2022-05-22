@@ -17,9 +17,9 @@ router.post('/', async (req, res) => {
                     //res.status(200).send(generateToken(user))
                     token = generateToken(user)
                     //console.log(checkToken(user, token))
-                    res.render("userProfile", {user: user});
+                    res.json({autenticato: "true", user: user})
                 }else if(user.client == false){
-                    res.render("mecProfile", {user: user});
+                    res.json({autenticato: "true", user: user})
                 }else{
                     res.render('errors', {error: "Si è verificato un errore nel login"})
                   }
@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
                     client: true
                 })
                 const newUser = await user.save();
-                res.render("userProfile", {user: newUser});
+                res.json({autenticato: "true", user: newUser})
             }else{
                 res.render('login', {error: "Email già presente"})
             }
