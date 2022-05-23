@@ -19,10 +19,6 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/:utente', (req, res) => {
-    res.send('Prenotazioni per l\'utente ' + req.params.utente)
-})
-
 router.delete('/:utente', async (req, res) => {
     let pren
     try{
