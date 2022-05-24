@@ -11,8 +11,9 @@ router.post('/', async (req, res) => {
     switch(req.body.submit){
         case 'Accedi':
             user = await User.findOne({email: email})
-            if(user && user.password && bcrypt.compare(password, user.password)){
-                //console.log(tokenGenFun(user), password, user.password)
+            if(user && user.password && bcrypt.compare(password, user.password) && user.password == password){
+
+                console.log(    user, password, user.password, bcrypt.compare(password, user.password))
                 if(user.client == true){
                     //res.status(200).send(generateToken(user))
                     token = generateToken(user)
@@ -21,7 +22,8 @@ router.post('/', async (req, res) => {
                 }else if(user.client == false){
                     res.render("mecProfile", {user: user});
                 }else{
-                    res.render('errors', {error: "Si è verificato un errore nel login"})
+                    res.render('login', {error: "Credenziali non valide"})
+                    //res.render('errors', {error: "Si è verificato un errore nel login"})
                   }
             }else{
                 res.render('login', {error: "Credenziali non valide"})
