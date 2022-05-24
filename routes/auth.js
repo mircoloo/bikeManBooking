@@ -11,9 +11,8 @@ router.post('/', async (req, res) => {
     switch(req.body.submit){
         case 'Accedi':
             user = await User.findOne({email: email})
-            if(user && user.password && bcrypt.compare(password, user.password) && user.password == password){
-
-                console.log(    user, password, user.password, bcrypt.compare(password, user.password))
+            if(user && user.password && await bcrypt.compare(password, user.password)){
+                //console.log(    user, password, user.password, await bcrypt.compare(password, user.password))
                 if(user.client == true){
                     //res.status(200).send(generateToken(user))
                     token = generateToken(user)
@@ -32,7 +31,9 @@ router.post('/', async (req, res) => {
         case 'Registrati':
             user = await User.findOne({email: email})
             if(!user){
-                const salt = await bcrypt.genSalt(10);
+                password = req.body.password;
+                if(password.length >= 6){
+                    const salt = await bcrypt.genSalt(10);
                 // now we set user password to hashed password
                 const hashedPassword = await bcrypt.hash(req.body.password, salt);
                 const user = new User({
@@ -47,6 +48,10 @@ router.post('/', async (req, res) => {
                 })
                 const newUser = await user.save();
                 res.render("userProfile", {user: newUser});
+                }else{
+                    res.render('login', {error: "Password troppo corta"})
+                }
+                
             }else{
                 res.render('login', {error: "Email già presente"})
             }

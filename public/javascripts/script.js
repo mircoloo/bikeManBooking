@@ -38,7 +38,7 @@ $(document).ready(function () {
     let email = $("#email-span").text();
     $.ajax({
       url: "/api/v1/users/" + email,
-      type: "PATCH",
+      type: "PUT",
       data: data,
       dataType: "json",
       success: () => {},
