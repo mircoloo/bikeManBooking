@@ -32,6 +32,8 @@ app.use(cookieParser());
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
+const profiloRouter = require('./routes/profilo');
+const calendarioMRouter = require('./routes/calendarioM')
 const {authenticateToken} = require('./routes/jwt')
 
 
@@ -44,6 +46,10 @@ app.use('/api/v1/users', usersRouter);
 
 app.use('/api/v1/authenticate', authRouter)
 
+
+app.use('/calendario', calendarioMRouter)
+
+app.use('/profilo', profiloRouter)
 
 
 app.use( (req, res) =>{
