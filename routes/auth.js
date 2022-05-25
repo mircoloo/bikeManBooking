@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const User = require('../models/user')
 var bcrypt = require('bcrypt');
-const {generateToken, checkToken} = require('./jwt')
+const jwt = require('./jwt')
 
 router.post('/', async (req, res) => {
     let user;
@@ -13,10 +13,15 @@ router.post('/', async (req, res) => {
             user = await User.findOne({email: email})
             if(user && user.password && await bcrypt.compare(password, user.password)){
                 //console.log(    user, password, user.password, await bcrypt.compare(password, user.password))
+                let token = jwt.setToken(user.email);
+                let payload = jwt.getPayload(token);
+                jwt.checkToken(token)
+                console.log(token, payload)
+
                 if(user.client == true){
-                    //res.status(200).send(generateToken(user))
-                    token = generateToken(user)
-                    //console.log(checkToken(user, token))
+             
+                    
+                    
                     res.render("userProfile", {user: user});
                 }else if(user.client == false){
                     res.render("mecProfile", {user: user});

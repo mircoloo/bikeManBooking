@@ -33,12 +33,15 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const profiloRouter = require('./routes/profilo');
+const authMidd = require('./routes/authMidd');
 const calendarioMRouter = require('./routes/calendarioM')
 const {authenticateToken} = require('./routes/jwt')
 
 
 //ROUTES
 app.use('/', indexRouter)
+
+//app.use(authMidd.checkAuth)
 
 //app.use('/api/v1/users', tokenChecker);
 app.use('/api/v1/users', usersRouter);

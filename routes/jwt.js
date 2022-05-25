@@ -22,7 +22,7 @@ function authenticateToken(req, res, next) {
     }
   });
 }
-
+/* 
 function checkToken(user, token){
     var result;
     jwt.verify(token, process.env.SUPER_SECRET, (err, user) => {
@@ -33,7 +33,7 @@ function checkToken(user, token){
       } 
     });
     return result;
-  }
+  } */
 
   function generateToken(user){
     let payload = {
@@ -43,4 +43,28 @@ function checkToken(user, token){
         let token = jwt.sign(payload, process.env.SUPER_SECRET, options);
         return token;
 }
-module.exports = {generateToken, checkToken};
+
+let options = { expiresIn: "1h" };
+
+
+let getPayload = (token) => {
+  var decode = jwt.decode(token, {complete: true});
+  return decode.payload;
+}
+
+let setToken = (email) => {
+  let payload = {email: email};
+
+  let token = jwt.sign(payload, process.env.SUPER_SECRET, options);
+  return token; 
+}
+
+let checkToken = (token) =>{
+  jwt.verify(token, process.env.SUPER_SECRET, options);
+}
+
+module.exports = {
+        setToken,
+        getPayload,
+        checkToken
+};

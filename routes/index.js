@@ -1,12 +1,10 @@
 const express = require('express')
 const router = express.Router()
+const authMidd = require('./authMidd');
 
 
-
-
-router.get('/', (req, res) => {
+router.get('/' ,(req, res) => {
     res.render('login')
 })
-
 
 module.exports = router
