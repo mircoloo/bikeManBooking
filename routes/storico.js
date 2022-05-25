@@ -19,17 +19,16 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.delete('/:utente', async (req, res) => {
+router.delete('/:data', async (req, res) => {
     let pren
     try{
-        pren = await Prenotazione.findOne({utente: req.params.utente})
+        pren = await Prenotazione.findOne({data: req.params.data})
         await pren.remove()
         res.redirect('/storico')
     } catch {
         if(pren == null){
             res.send('prenotazione vuota')
         } else{
-            //res.redirect('/storico')
             res.send('Prenotazione non eliminata')
         }
     }
