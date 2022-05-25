@@ -21,9 +21,8 @@ router.post('/', async (req, res) => {
     try{
         const newPrenotazione = await pren.save()
         res.render('calendarioU/created' , { prenotazione : newPrenotazione})
-        //res.send(req.body)
     } catch {
-        res.send('errore')
+        res.render('calendarioU/error')
     }
 })
 
