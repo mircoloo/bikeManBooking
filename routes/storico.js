@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 router.delete('/:data', async (req, res) => {
     let pren
     try{
-        pren = await Prenotazione.findOne({data: req.params.data})
+        pren = await Prenotazione.findOne({prenotazione: req.params})        
         await pren.remove()
         res.redirect('/storico')
     } catch {
