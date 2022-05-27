@@ -1,9 +1,46 @@
-<h2>Prenota la tua manutenzione</h2>
-<form action="/calendario" method="POST">
-    <label>Data </label><input type="date" name="data" value="<%= prenotazione.data %>"></input><br>
-    <label>Utente </label><input type="text" name="utente" value="<%= prenotazione.utente%>"></input><br>
-    <label>Problema </label><input type="text" name="problema" value="<%= prenotazione.problema%>"></input><br>
-    <label>Bici </label><input type="text" name="bici" value="<%= prenotazione.bici%>"></input><br>
-    <a href="/calendario">Annulla</a>
-    <button type="submit">Crea prenotazione</button>
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 80%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+</style>
+</head>
+
+<h2>Trova prenotazioni per giorno</h2>
+<form action="/calendario" method="GET">
+    <label>Seleziona la data</label>
+    <!-- <input type="text" name="utente" value="<%= searchOptions.utente %>"></input>  -->
+    <input type="date" name="data" value="<%= searchOptions.data %>"></input> 
+    <button>Stampa prenotazioni</button>
 </form>
+<body>
+    <h2>Storico manutenzioni</h2>
+<table>    
+    <tr>
+    <th>Data prenotazione</th>
+    <th>Utente</th>
+    <th>Problema</th>
+    <th>Bici</th>    
+    </tr>
+<% prenotazione.forEach( p => { %>
+  <tr>
+    <td><%= p.data %></td>
+    <td><%= p.utente %></td>
+    <td><%= p.problema %></td>
+    <td><%= p.bici %></td> 
+  </tr>
+<% }) %>
+
+</table>
+</body>

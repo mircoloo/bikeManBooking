@@ -1,0 +1,9 @@
+<h2>Prenota la tua manutenzione</h2>
+<form action="/calendario/prenota" method="POST">
+    <label>Data </label><input type="date" name="data" value="<%= prenotazione.data %>"></input><br>
+    <label>Utente </label><input type="text" name="utente" value="<%= prenotazione.utente%>"></input><br>
+    <label>Problema </label><input type="text" name="problema" value="<%= prenotazione.problema%>"></input><br>
+    <label>Bici </label><input type="text" name="bici" value="<%= prenotazione.bici%>"></input><br>
+    <a href="/calendario/prenota">Annulla</a>
+    <button type="submit">Crea prenotazione</button>
+</form>
