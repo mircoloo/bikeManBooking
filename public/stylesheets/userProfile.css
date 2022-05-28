@@ -1,4 +1,4 @@
-@import url("header.css");
+ @import url("header.css");
 
 body{
     margin: 0;
@@ -59,9 +59,6 @@ header a:nth-child(1)::after{
     margin: 0;
 }
 
-#nome-cognome{
-
-}
 
 .informations{
     display: flex;
@@ -97,11 +94,13 @@ header a:nth-child(1)::after{
     top: 50%;
     transform: translate(-50%, -50%);
     border-radius: 0.8rem;
-    background-color: var(--white);
+
+    background-color: rgb(255, 255, 255);
     margin: 0 2rem;
     width: 60%;
-    height: 700px;
+    height: 90%;
 }
+
 
 .card{
     background-color: var(--black2);
@@ -176,3 +175,4 @@ header a:nth-child(1):hover::after{
         flex-direction: column;
     }
 }
+ 

@@ -65,7 +65,7 @@ router.put('/:email', getUser, async (req, res) => {
         }catch(err){
             res.status(400).json({message: error.message})
         }
-});
+    });
 
 //deleting one user
 router.delete('/:email', getUser,async (req, res) => {

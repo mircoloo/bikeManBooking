@@ -4,27 +4,25 @@ const User = require('../models/user')
 var bcrypt = require('bcrypt');
 const jwt = require('./jwt')
 
+
+
 router.post('/', async (req, res) => {
     let user;
     let email = req.body.email
     let password = req.body.password
     switch(req.body.submit){
-        case 'Accedi':
+        case 'Accedi':              //CASO IN CUI L'UTENTE VUOLE ACCEDERE 
             user = await User.findOne({email: email})
             if(user && user.password && await bcrypt.compare(password, user.password)){
                 //console.log(    user, password, user.password, await bcrypt.compare(password, user.password))
                 let token = jwt.setToken(user.email);
                 let payload = jwt.getPayload(token);
-                jwt.checkToken(token)
-                console.log(token, payload)
-
                 if(user.client == true){
-             
-                    
-                    
-                    res.render("userProfile", {user: user});
+                    //res.render("userProfile", {user: user});
+                    res.cookie('token', token).redirect("/profilo")
                 }else if(user.client == false){
-                    res.render("mecProfile", {user: user});
+                    //res.render("mecProfile", {user: user});
+                    res.cookie('token', token).redirect("/profilo")
                 }else{
                     res.render('login', {error: "Credenziali non valide"})
                     //res.render('errors', {error: "Si è verificato un errore nel login"})
@@ -33,7 +31,7 @@ router.post('/', async (req, res) => {
                 res.render('login', {error: "Credenziali non valide"})
             }
             break;
-        case 'Registrati':
+        case 'Registrati':      //CASO IN CUI L'UTENTE VUOLE REGISTRARSI
             user = await User.findOne({email: email})
             if(!user){
                 password = req.body.password;
@@ -41,6 +39,10 @@ router.post('/', async (req, res) => {
                     const salt = await bcrypt.genSalt(10);
                 // now we set user password to hashed password
                 const hashedPassword = await bcrypt.hash(req.body.password, salt);
+                let token = jwt.setToken(req.body.email);
+                let payload = jwt.getPayload(token);
+                //jwt.checkToken(token)
+                //user.token = token; user.save();
                 const user = new User({
                     email: req.body.email,
                     password: hashedPassword,
@@ -49,10 +51,12 @@ router.post('/', async (req, res) => {
                     bikes: [],
                     ebikes: [],
                     indirizzo: "",
-                    client: true
+                    client: true,
+                    token: token
                 })
                 const newUser = await user.save();
-                res.render("userProfile", {user: newUser});
+                //res.render("userProfile", {user: newUser});
+                res.cookie('token', token).redirect("/profilo")
                 }else{
                     res.render('login', {error: "Password troppo corta"})
                 }

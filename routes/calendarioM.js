@@ -7,6 +7,7 @@ const Prenotazione = require('../models/prenotazione')
 // 
 // Pagina che permette di selezionare la data
 router.get('/', async (req, res) => {
+    //console.log(req.cookies)
     let searchOptions = {}
     if(req.query.data != null && req.query.data !== ''){
         searchOptions.data = new RegExp(req.query.data)

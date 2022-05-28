@@ -6,7 +6,7 @@ require('dotenv').config()
 require('./scripts/dbConnection')
 const cookieParser = require('cookie-parser')
 const expressLayouts = require('express-ejs-layouts') 
-
+const jwt = require('./routes/jwt')
 
 const port = process.env.PORT || 3000
 const app = express()
@@ -33,27 +33,31 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const profiloRouter = require('./routes/profilo');
-const authMidd = require('./routes/authMidd');
 const calendarioMRouter = require('./routes/calendarioM')
 const {authenticateToken} = require('./routes/jwt')
-
+const {userAuth} = require('./routes/jwt')
 
 //ROUTES
+
 app.use('/', indexRouter)
 
+app.use('/api/v1/authenticate', authRouter)
 //app.use(authMidd.checkAuth)
-
 //app.use('/api/v1/users', tokenChecker);
+
+//routes che necessitano dell'autorizzazione del token per essere usate
+
+//API router
 app.use('/api/v1/users', usersRouter);
 
+app.use(userAuth)
 
-app.use('/api/v1/authenticate', authRouter)
-
-
+//routes e pages
 app.use('/calendario', calendarioMRouter)
 
-app.use('/profilo', profiloRouter)
+app.use('/profilo' , profiloRouter)
 
+//app.use('/storico' , storicoRouter)
 
 app.use( (req, res) =>{
     res.status(404).render('errors', {error: "Pagina non trovata"});
