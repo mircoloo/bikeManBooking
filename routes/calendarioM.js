@@ -9,23 +9,23 @@ const Prenotazione = require('../models/prenotazione')
 // 
 // Pagina che permette di selezionare la data
 router.get('/', async (req, res) => {
-    let searchOptions = {}
+    let sO = {}
     if (req.query.data != null && req.query.data !== '') {
-        searchOptions.data = String(new RegExp(req.query.data))
+        sO.data = String(new RegExp(req.query.data))
     } else {
-        searchOptions.data = String(new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate()) //
+        sO.data = new Date().toISOString().slice(0,10)
     }
     try {
-        if (searchOptions.data.endsWith('/'))
-            searchOptions.data = searchOptions.data.slice(0, -1)
-        if (searchOptions.data.startsWith('/'))
-            searchOptions.data = searchOptions.data.slice(1,)
+        if (sO.data.endsWith('/'))
+            sO.data = sO.data.slice(0, -1)
+        if (sO.data.startsWith('/'))
+            sO.data = sO.data.slice(1,)
 
-        const prenotazioni = await Prenotazione.find(searchOptions) // filtra sulla data
+        const prenotazioni = await Prenotazione.find(sO) // filtra sulla data
 
         res.render('calendarioM/index', { 
             prenotazione : prenotazioni, 
-            searchOptions: req.query
+            searchOptions: sO
         })
     } catch {
         res.send('error ')

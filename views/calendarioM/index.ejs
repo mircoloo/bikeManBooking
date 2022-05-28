@@ -25,8 +25,16 @@
     <input type="date" name="data" value="<%= searchOptions.data %>"></input> 
     <button>Stampa prenotazioni</button>
 </form>
-<body>
+<body onload="myFunction()">
     <h2>Storico manutenzioni</h2>
+    <form action="/calendario" method="GET">
+    <input type="hidden" name="data" id="prev" value=""></input> 
+    <button>Prev</button>
+    </form>
+    <form action="/calendario" method="GET">
+    <input type="hidden" name="data" id="next" value=""></input> 
+    <button>Next</button>
+    </form>
 <table>    
     <tr>
     <th>Data prenotazione</th>
@@ -45,4 +53,13 @@
 <% }) %>
 
 </table>
+  <script>
+    function myFunction() {
+      var m = new Date("<%= searchOptions.data %>")
+        m.setDate(m.getDate()-1)
+        document.getElementById("prev").value = m.toISOString().slice(0,10);
+        m.setDate(m.getDate()+2)
+        document.getElementById("next").value = m.toISOString().slice(0,10);
+        }
+      </script>
 </body>
