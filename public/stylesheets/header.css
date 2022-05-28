@@ -10,8 +10,7 @@ body{
 header{
     display: flex;
     background-color: #ff7782;
-    justify-content: right;
-    /*z-index: 10;*/
+    justify-content: right; 
 }
 
 header a{

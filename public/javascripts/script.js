@@ -43,10 +43,15 @@ $(document).ready(function () {
       dataType: "json",
       success: () => {},
     });
+ 
     $(".update-info").css({ visibility: "hidden" });
     $("#info-confirm-btn").css({ visibility: "hidden" });
     //$("input").reset()
     //window.location = window.location.href;
+    
+    location.reload();
+    return false;
   });
+  
 });
 
