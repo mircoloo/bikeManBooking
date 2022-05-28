@@ -24,6 +24,7 @@ body{
 header a:nth-child(1){
     position: relative;
 }
+
 header a:nth-child(1)::after{
     position: absolute;
     content: "";
@@ -52,7 +53,6 @@ header a:nth-child(1)::after{
 }
 
 .profile-box{
-
     text-align: center;
     background-color: var(--red);
     padding: 40px 90px;
@@ -61,7 +61,7 @@ header a:nth-child(1)::after{
     border-radius: 20px;
 }
 
-.content{
+.profile-content{
     display: flex;
 }
 
@@ -83,8 +83,19 @@ header a:nth-child(1)::after{
     align-items: flex-start;
 }
 
+/* .grp{
+    background-color: var(--blue);
+}
+
 .grp *{
-    margin: 2px;    
+    margin-bottom: 2px;  
+} */
+
+.grp{
+    /* border: 1px solid red; */
+    margin: 2px;
+    padding: 1.2rem;
+    border-radius: .8rem;
 }
 
 
@@ -92,7 +103,6 @@ header a:nth-child(1)::after{
     font-weight: bold;
     font-size: x-large;
     color: var(--black1);
-
 }
 
 .update-info{
