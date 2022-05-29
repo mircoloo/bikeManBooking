@@ -10,22 +10,46 @@ const Prenotazione = require('../models/prenotazione')
 // Pagina che permette di selezionare la data
 router.get('/', async (req, res) => {
     let sO = {}
+    let d = "";
     if (req.query.data != null && req.query.data !== '') {
-        sO.data = String(new RegExp(req.query.data))
+        d = String(req.query.data)
     } else {
-        sO.data = new Date().toISOString().slice(0,10)
+        d = new Date().toISOString().slice(0, 10)
     }
+    switch (req.query.type) {
+        case "day":
+            sO.data = d;
+            break;
+        case "week":
+            var obj = new Date(d)
+            var start = obj.getTime() - (obj.getDay() * 86400000)
+            var end = start + 7 * 86400000
+            sO.data = {
+                $gte: new Date(start).toISOString().slice(0, 10),
+                $lt: new Date(end).toISOString().slice(0, 10)
+            }
+            break;
+        case "month":
+            var obj = new Date(d)
+            var start = obj.setDate(1)
+            var end = obj.setMonth(obj.getMonth() + 1)
+            sO.data = {
+                $gte: new Date(start).toISOString().slice(0, 10),
+                $lt: new Date(end).toISOString().slice(0, 10)
+            }
+            break;
+        default:
+            sO.data = d;
+            break;
+    }
+    
+    
     try {
-        if (sO.data.endsWith('/'))
-            sO.data = sO.data.slice(0, -1)
-        if (sO.data.startsWith('/'))
-            sO.data = sO.data.slice(1,)
-
         const prenotazioni = await Prenotazione.find(sO) // filtra sulla data
 
         res.render('calendarioM/index', { 
             prenotazione : prenotazioni, 
-            searchOptions: sO
+            data: d
         })
     } catch {
         res.send('error ')

@@ -21,20 +21,18 @@
 <h2>Trova prenotazioni per giorno</h2>
 <form action="/calendario" method="GET">
     <label>Seleziona la data</label>
-    <!-- <input type="text" name="utente" value="<%= searchOptions.utente %>"></input>  -->
-    <input type="date" name="data" value="<%= searchOptions.data %>"></input> 
+    <input type="date" name="data" value="<%= data %>" id="data"></input> 
+    <select id="type" name="type">
+      <option value="day" selected="selected">Giorno</option>
+      <option value="week">Settimana</option>
+      <option value="month">Mese</option>
+    </select>
     <button>Stampa prenotazioni</button>
 </form>
 <body onload="myFunction()">
     <h2>Storico manutenzioni</h2>
-    <form action="/calendario" method="GET">
-    <input type="hidden" name="data" id="prev" value=""></input> 
-    <button>Prev</button>
-    </form>
-    <form action="/calendario" method="GET">
-    <input type="hidden" name="data" id="next" value=""></input> 
-    <button>Next</button>
-    </form>
+    <button onclick="goPrev()" id="prev">Prev</button>
+    <button onclick="goNext()" id="next">Next</button>
 <table>    
     <tr>
     <th>Data prenotazione</th>
@@ -45,7 +43,7 @@
     </tr>
 <% prenotazione.forEach( p => { %>
   <tr>
-    <td><%= p.data %></td>
+    <td><%= p.data.toDateString() %></td>
     <td><%= p.utente %></td>
     <td><%= p.problema %></td>
     <td><%= p.bici %></td> 
@@ -55,11 +53,40 @@
 </table>
   <script>
     function myFunction() {
-      var m = new Date("<%= searchOptions.data %>")
+      var url = new URL(window.location.href)
+      var t = url.searchParams.get("type")
+      console.log(t)
+      document.getElementById("type").value = t
+      /*let m
+      <% if(data){ %>
+        m = new Date("<%= data %>")
+      <% } else{ %>  
+        m = new Date()
+      <% } %>
         m.setDate(m.getDate()-1)
         document.getElementById("prev").value = m.toISOString().slice(0,10);
         m.setDate(m.getDate()+2)
-        document.getElementById("next").value = m.toISOString().slice(0,10);
-        }
-      </script>
+        document.getElementById("next").value = m.toISOString().slice(0,10);*/
+    }
+    function goPrev() {
+      let m
+      <% if(data){ %>
+        m = new Date("<%= data %>")
+      <% } else{ %>  
+        m = new Date()
+      <% } %>
+        m.setDate(m.getDate()-1)
+      location.href = '?data=' + m.toISOString().slice(0,10) + '&type=' + document.getElementById("type").value
+    }
+    function goNext() {
+      let m
+      <% if(data){ %>
+        m = new Date("<%= data %>")
+      <% } else{ %>  
+        m = new Date()
+      <% } %>
+        m.setDate(m.getDate()+1)
+      location.href = '?data=' + m.toISOString().slice(0,10) + '&type=' + document.getElementById("type").value
+    }
+  </script>
 </body>
