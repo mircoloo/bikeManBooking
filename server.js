@@ -7,6 +7,7 @@ require('./scripts/dbConnection')
 const cookieParser = require('cookie-parser')
 const expressLayouts = require('express-ejs-layouts') 
 const jwt = require('./routes/jwt')
+const storicoRouter = require('./routes/storico')
 
 const port = process.env.PORT || 3000
 const app = express()
@@ -46,7 +47,7 @@ app.use('/api/v1/authenticate', authRouter)
 //app.use('/api/v1/users', tokenChecker);
 
 //routes che necessitano dell'autorizzazione del token per essere usate
-
+app.use('/storico', storicoRouter)
 //API router
 app.use('/api/v1/users', usersRouter);
 
