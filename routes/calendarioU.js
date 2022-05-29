@@ -9,21 +9,13 @@ router.get('/', async(req, res) => {
     if(req.query.data != null && req.query.data !== ''){
         so.data = String(new RegExp(req.query.data))
     } else {
-        let tmp = new Date()
-        if(tmp.getMonth() < 10){
-            so.data = String(new Date().getFullYear()+'-0'+(new Date().getMonth()+1)+'-'+new Date().getDate())
-            //console.log('minore di 10: ' + so.data)
-        } else {
-            so.data = String(new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate())
-            //console.log('maggiore di 10: ' + so.data)
-        }
+        so.data = new Date().toISOString().slice(0,10)
     }
     try{
         so.data = so.data.endsWith('/') ? so.data.slice(0, -1) : so.data
         so.data = so.data.startsWith('/') ? so.data.slice(1, ) : so.data
         const prenotazioni = await Prenotazione.find(so) 
 
-        //console.log(so.data)
         
         res.render('calendarioU/index', { 
             prenotazione : prenotazioni, 
