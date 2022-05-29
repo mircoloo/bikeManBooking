@@ -13,9 +13,14 @@ router.get('/',async (req, res) => {
         let userMail = jwt.getPayload(token).email
         const user = await User.findOne({email: userMail})
         if(user){
+            if(user.client){
+                res.render('userProfile', {user: user});
+            }else{
+                res.render('mecProfile', {user: user});
+            }
             //console.log(user)
             //jwt.checkToken(user.token)
-            res.render('userProfile', {user: user});
+            
         }else{
             res.status(401).render('login',{error: "Errore nell'autenticazione"})
         }

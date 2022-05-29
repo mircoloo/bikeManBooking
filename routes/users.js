@@ -3,14 +3,20 @@ const { update } = require('../models/user');
 const router = express.Router()
 const User = require('../models/user')
 const jwt = require("jsonwebtoken");
+const bodyParser = require('body-parser')
+
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({extended: true}));
 
 //getting all users
 router.get('/getAll', async (req, res) => {
+    console.log(req.body, req.params, req.query)
     try{
         const users = await User.find() 
         res.json(users)
     } catch (err){
         res.status(500).json({ message : err.message})
+        //res.status(500)
     }
 });
 //getting one user

@@ -119,7 +119,7 @@ header a:nth-child(1):hover::after{
 
 
 @media only screen and (max-width: 500px){
-    .profile{
+    .profile-content{
         flex-direction: column;
     }
 
