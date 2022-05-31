@@ -10,14 +10,14 @@ router.use(bodyParser.urlencoded({extended: true}));
 
 
 router.post('/', async (req, res) => {
-    console.log(req.body)
+    //console.log(req.body)
     let user;
     let email = req.body.email
     let password = req.body.password
     switch(req.body.submit){
         case 'Accedi':              //CASO IN CUI L'UTENTE VUOLE ACCEDERE 
             user = await User.findOne({email: email})
-            if(user && user.password && await bcrypt.compare(password, user.password) || user.password == password){
+            if(user && user.password && await bcrypt.compare(password, user.password)){
                 //console.log(    user, password, user.password, await bcrypt.compare(password, user.password))
                 let token = jwt.setToken(user.email);
                 let payload = jwt.getPayload(token);
@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
                     //res.render('errors', {error: "Si è verificato un errore nel login"})
                   }
             }else{
-                res.render('login', {error: "Credenziali non valide"}).status(600)
+                res.render('login', {error: "Credenziali non valide"})
             }
             break;
         case 'Registrati':      //CASO IN CUI L'UTENTE VUOLE REGISTRARSI
