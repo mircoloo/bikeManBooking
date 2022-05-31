@@ -3,25 +3,24 @@ const res = require('express/lib/response')
 const router = express.Router()
 const Prenotazione = require('../models/prenotazione')
 
-// adesso la ricerca per data funziona correttamente, bisogna pulire il codice
 
-// <input type="date" name="data" value="<%= prenotazione.data %>"></input> 
-// 
 // Pagina che permette di selezionare la data
 router.get('/', async (req, res) => {
-    let sO = {}
-    let d = "";
-    if (req.query.data != null && req.query.data !== '') {
-        d = String(req.query.data)
-    } else {
-        d = new Date().toISOString().slice(0, 10)
+    try {
+        res.render('calendarioM/index')
+    } catch {
+        res.send('error ')
     }
-    switch (req.query.type) {
+})
+
+async function getPrenotazioni(data, type) {
+    let sO = {}
+    switch (type) {
         case "day":
-            sO.data = d;
+            sO.data = data;
             break;
         case "week":
-            var obj = new Date(d)
+            var obj = new Date(data)
             var start = obj.getTime() - (obj.getDay() * 86400000)
             var end = start + 7 * 86400000
             sO.data = {
@@ -30,7 +29,7 @@ router.get('/', async (req, res) => {
             }
             break;
         case "month":
-            var obj = new Date(d)
+            var obj = new Date(data)
             var start = obj.setDate(1)
             var end = obj.setMonth(obj.getMonth() + 1)
             sO.data = {
@@ -38,22 +37,31 @@ router.get('/', async (req, res) => {
                 $lt: new Date(end).toISOString().slice(0, 10)
             }
             break;
-        default:
-            sO.data = d;
-            break;
     }
-    
-    
-    try {
-        const prenotazioni = await Prenotazione.find(sO) // filtra sulla data
 
-        res.render('calendarioM/index', { 
-            prenotazione : prenotazioni, 
-            data: d
-        })
-    } catch {
-        res.send('error ')
+    // filtra sulla data
+    return await Prenotazione.find(sO)
+}
+
+router.get('/prenotazioni', async (req, res) => {
+    let sO = {}
+    let d = ""
+    let prenotazioni
+    if (req.query.data != null && req.query.data !== '') {
+        d = String(req.query.data)
+    } else {
+        d = new Date().toISOString().slice(0, 10)
     }
+    if (req.query.type != null && req.query.type !== '') {
+        prenotazioni = await getPrenotazioni(d, req.query.type)
+    } else {
+        prenotazioni = await getPrenotazioni(d, "day")
+    }
+
+    res.send({
+        prenotazione: prenotazioni,
+        data: d
+    })
 })
 
 module.exports = router

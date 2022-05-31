@@ -19,74 +19,96 @@
 </head>
 
 <h2>Trova prenotazioni per giorno</h2>
-<form action="/calendario" method="GET">
     <label>Seleziona la data</label>
-    <input type="date" name="data" value="<%= data %>" id="data"></input> 
+    <input type="date" name="data" value="" id="data"></input> 
     <select id="type" name="type">
       <option value="day" selected="selected">Giorno</option>
       <option value="week">Settimana</option>
       <option value="month">Mese</option>
     </select>
-    <button>Stampa prenotazioni</button>
-</form>
+    <button onclick="go()">Stampa prenotazioni</button>
 <body onload="myFunction()">
     <h2>Storico manutenzioni</h2>
     <button onclick="goPrev()" id="prev">Prev</button>
     <button onclick="goNext()" id="next">Next</button>
-<table>    
-    <tr>
+<table>
+  <thead>
+    <tr id="heading">
     <th>Data prenotazione</th>
     <th>Utente</th>
     <th>Problema</th>
-    <th>Bici</th>    
-
+    <th>Bici</th>
     </tr>
-<% prenotazione.forEach( p => { %>
-  <tr>
-    <td><%= p.data.toDateString() %></td>
-    <td><%= p.utente %></td>
-    <td><%= p.problema %></td>
-    <td><%= p.bici %></td> 
-  </tr>
-<% }) %>
-
+  </thead>
+  <tbody id="tbody">
+    
+  </tbody>
 </table>
+  
   <script>
     function myFunction() {
-      var url = new URL(window.location.href)
-      var t = url.searchParams.get("type")
-      console.log(t)
-      document.getElementById("type").value = t
-      /*let m
-      <% if(data){ %>
-        m = new Date("<%= data %>")
-      <% } else{ %>  
-        m = new Date()
-      <% } %>
-        m.setDate(m.getDate()-1)
-        document.getElementById("prev").value = m.toISOString().slice(0,10);
-        m.setDate(m.getDate()+2)
-        document.getElementById("next").value = m.toISOString().slice(0,10);*/
+      let d = new Date().toISOString().slice(0,10)
+      document.getElementById("data").value = d
+      document.getElementById("type").value  = "day"
+      loadPren(d, "day")
     }
     function goPrev() {
-      let m
-      <% if(data){ %>
-        m = new Date("<%= data %>")
-      <% } else{ %>  
-        m = new Date()
-      <% } %>
-        m.setDate(m.getDate()-1)
-      location.href = '?data=' + m.toISOString().slice(0,10) + '&type=' + document.getElementById("type").value
+      let m = new Date(document.getElementById("data").value)
+      m.setDate(m.getDate()-1)
+      document.getElementById("data").value = m.toISOString().slice(0,10)
+      go()
     }
     function goNext() {
-      let m
-      <% if(data){ %>
-        m = new Date("<%= data %>")
-      <% } else{ %>  
-        m = new Date()
-      <% } %>
-        m.setDate(m.getDate()+1)
-      location.href = '?data=' + m.toISOString().slice(0,10) + '&type=' + document.getElementById("type").value
+      let m = new Date(document.getElementById("data").value)
+      m.setDate(m.getDate()+1)
+      document.getElementById("data").value = m.toISOString().slice(0,10)
+      go()
+    }
+    function go() {
+      let d = document.getElementById("data").value
+      let t = document.getElementById("type").value
+      
+      document.getElementById("tbody").innerHTML = ""
+      loadPren(d, t)
+    }
+    function loadPren(day, type) {
+      const heading = document.getElementById('tbody')
+      const list = document.createDocumentFragment()
+      
+      getData(`./prenotazioni?data=${day}&type=${type}`).then((v) => {
+        v.prenotazione.map(function(p) {
+          tr = document.createElement('tr')
+          data = document.createElement('td')
+          utente = document.createElement('td')
+          problema = document.createElement('td')
+          bici = document.createElement('td')
+          
+          tr.setAttribute("name", "pren")
+          data.innerHTML = `${p.data.slice(0,10)}`
+          utente.innerHTML = `${p.utente}`
+          problema.innerHTML = `${p.problema}`
+          bici.innerHTML = `${p.bici}`
+          
+          tr.appendChild(data)
+          tr.appendChild(utente)
+          tr.appendChild(problema)
+          tr.appendChild(bici)
+          
+          list.appendChild(tr)
+        })
+
+        document.getElementById("data").value = day
+        heading.appendChild(list)
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+    }
+    async function getData(url) {
+      const res = await fetch(url)
+      const data = await res.json()
+      
+      return data
     }
   </script>
 </body>
