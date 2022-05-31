@@ -18,19 +18,12 @@
 </head>
 
 <body>
-  <h2>Trova prenotazioni per giorno</h2>
-<form action="/storico" method="GET">
-    <label>Seleziona l'utente</label>
-    <input type="text" name="utente" value="<%= searchOptions.utente %>"></input> 
-    <button>Stampa prenotazioni</button>
-</form>
 <body>
     <h2>Storico manutenzioni</h2>
 
 <table>    
     <tr>
     <th>Data prenotazione</th>
-    <th>Utente</th>
     <th>Problema</th>
     <th>Bici</th>    
     <th>Cancella</th>
@@ -38,8 +31,7 @@
     
 <% prenotazione.forEach( p => { %>
   <tr>
-    <td><%= p.data.toDateString() %></td>
-    <td><%= p.utente %></td>
+    <td><%= p.data.toDateString() %></td> 
     <td><%= p.problema %></td>
     <td><%= p.bici %></td> 
     <% if(p.data > Date.now()){ %>
