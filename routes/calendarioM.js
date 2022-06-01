@@ -5,12 +5,8 @@ const Prenotazione = require('../models/prenotazione')
 
 
 // Pagina che permette di selezionare la data
-router.get('/', async (req, res) => {
-    try {
-        res.render('calendarioM/index')
-    } catch {
-        res.send('error ')
-    }
+router.get('/', (req, res) => {
+    res.render('calendarioM/index')
 })
 
 async function getPrenotazioni(data, type) {
