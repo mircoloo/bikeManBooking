@@ -1,5 +1,5 @@
 /*==========HEADER =========*/
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,600;0,700;0,800;1,400&display=swap');
 header a:nth-child(1)::after{
     content: none;
 }
@@ -18,8 +18,7 @@ header a:nth-child(2)::after{
 }
 
 header a:nth-child(2):hover::after{
-    width: 20%;
-    transition: .5s;
+    animation: an 1s;
 }
 
 table {
@@ -37,3 +36,10 @@ table {
   tr:nth-child(even) {
     background-color: #dddddd;
   }
+
+  @keyframes an {
+    50%{
+        width: 0;
+    } 
+    
+}

@@ -42,23 +42,20 @@ const {userAuth} = require('./routes/jwt')
 
 app.use('/', indexRouter)
 
-app.use('/api/v1/authenticate', authRouter)
-//app.use(authMidd.checkAuth)
-//app.use('/api/v1/users', tokenChecker);
+app.use('/api/v1/authenticate', authRouter);
 
-//routes che necessitano dell'autorizzazione del token per essere usate
-app.use('/storico', storicoRouter)
 //API router
 app.use('/api/v1/users', usersRouter);
 
 app.use(userAuth)
-
-//routes e pages
+//routes che necessitano dell'autorizzazione del token per essere usate
+app.use('/storico', storicoRouter)
 app.use('/calendario', calendarioMRouter)
 
 app.use('/profilo' , profiloRouter)
 
-//app.use('/storico' , storicoRouter)
+
+
 
 app.use( (req, res) =>{
     res.status(404).render('errors', {error: "Pagina non trovata"});

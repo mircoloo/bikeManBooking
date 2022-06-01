@@ -1,5 +1,5 @@
 @import url("header.css");
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,600;0,700;0,800;1,400&display=swap');
 body{
     margin: 0;
     padding: 0;                 
@@ -83,14 +83,6 @@ header a:nth-child(1)::after{
     align-items: flex-start;
 }
 
-/* .grp{
-    background-color: var(--blue);
-}
-
-.grp *{
-    margin-bottom: 2px;  
-} */
-
 .grp{
     /* border: 1px solid red; */
     margin: 2px;
@@ -109,12 +101,27 @@ header a:nth-child(1)::after{
     visibility: hidden;
 }
 
+#link-storico{
+    text-decoration: none;
+    margin: 0 0 40px 20px;
+    font-size: 1.5rem;
+    transition: .8s;
+}
+#link-storico:hover{
+   font-size: 1.6rem;
+}
+
 
 /* ANIMATIONS */
 
+@keyframes an {
+    50%{
+        width: 0;
+    } 
+    
+}
 header a:nth-child(1):hover::after{
-    width: 20%;
-    transition: .5s;
+    animation: an 1s;
 }
 
 
