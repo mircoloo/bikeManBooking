@@ -43,21 +43,21 @@ router.get('/prenotazioni', async (req, res) => {
     let sO = {}
     let d = ""
     let prenotazioni
-    if (req.query.data != null && req.query.data !== '') {
-        d = String(req.query.data)
-    } else {
-        d = new Date().toISOString().slice(0, 10)
-    }
+
+    d = req.query.data || new Date().toISOString().slice(0, 10)
+
     if (req.query.type != null && req.query.type !== '') {
         prenotazioni = await getPrenotazioni(d, req.query.type)
     } else {
         prenotazioni = await getPrenotazioni(d, "day")
     }
 
-    res.send({
+    res.json({
         prenotazione: prenotazioni,
-        data: d
     })
 })
 
-module.exports = router
+module.exports = {
+    router,
+    getPrenotazioni
+}

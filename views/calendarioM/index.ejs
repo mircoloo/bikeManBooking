@@ -77,7 +77,7 @@
       const heading = document.getElementById('tbody')
       const list = document.createDocumentFragment()
       
-      getData(`prenotazioni?data=${day}&type=${type}`).then((v) => {
+      getData(`calendario/prenotazioni?data=${day}&type=${type}`).then((v) => {
         v.prenotazione.map(function(p) {
           tr = document.createElement('tr')
           data = document.createElement('td')

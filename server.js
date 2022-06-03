@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 
 const indexRouter = require('./routes/index')
-const calendarioMRouter = require('./routes/calendarioM')
+const calendarioMRouter = require('./routes/calendarioM').router
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
