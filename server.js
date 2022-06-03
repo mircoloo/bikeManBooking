@@ -34,7 +34,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const profiloRouter = require('./routes/profilo');
-const calendarioMRouter = require('./routes/calendarioM')
+const calendarioRouter = require('./routes/calendario')
 const {authenticateToken} = require('./routes/jwt')
 const {userAuth} = require('./routes/jwt')
 
@@ -50,7 +50,7 @@ app.use('/api/v1/users', usersRouter);
 app.use(userAuth)
 //routes che necessitano dell'autorizzazione del token per essere usate
 app.use('/storico', storicoRouter)
-app.use('/calendario', calendarioMRouter)
+app.use('/calendario', calendarioRouter)
 
 app.use('/profilo' , profiloRouter)
 

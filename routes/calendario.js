@@ -11,12 +11,48 @@ router.get('/', async (req, res) => {
     const email = jwt.getPayload(token).email
     const user =  await User.findOne({email: email})
     //console.log(user, email) 
-    if(user.client == false){
+    if(user.client == false){ //calendario meccanico
         res.render('calendarioM')
-    }else{
-        res.send("calendario utente")
+    }else{ //calendario Utente
+        let so = {}
+        if(req.query.data != null && req.query.data !== ''){
+            so.data = String(new RegExp(req.query.data))
+        } else {
+            so.data = new Date().toISOString().slice(0,10)
+        }
+        try{
+            so.data = so.data.endsWith('/') ? so.data.slice(0, -1) : so.data
+            so.data = so.data.startsWith('/') ? so.data.slice(1, ) : so.data
+            const prenotazioni = await Prenotazione.find({data: so.data, utente: email}) 
+    
+            
+            res.render('calendarioU', { 
+                prenotazione : prenotazioni, 
+                searchOptions: so,
+                nuovaPren: new Prenotazione()
+            })
+        } catch {
+            res.render('errors', {error: "Errore caricamento pagina"})
+        }
     }
     
+})
+
+router.post('/', async (req, res) => {
+    const token = req.cookies.token
+    const email = jwt.getPayload(token).email
+    const pren = new Prenotazione({
+        data: req.body.data,
+        utente: email,
+        problema: req.body.problema,
+        bici: req.body.bici
+    })
+    try{
+        const newPrenotazione = await pren.save()
+        res.render('created' , { prenotazione : newPrenotazione})
+    } catch {
+        res.render('errors', {error: "Errore creazione"})
+    }
 })
 
 async function getPrenotazioni(data, type) {
@@ -50,6 +86,8 @@ async function getPrenotazioni(data, type) {
 }
 
 router.get('/prenotazioni', async (req, res) => {
+    const token = req.cookies.token
+    const email = jwt.getPayload(token).email
     let sO = {}
     let d = ""
     let prenotazioni
