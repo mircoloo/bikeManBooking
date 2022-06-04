@@ -5,7 +5,7 @@ const Prenotazione = require('../models/prenotazione')
 
 
 router.get('/', async(req, res) => {
-    let so = {}
+    /*let so = {}
     if(req.query.data != null && req.query.data !== ''){
         so.data = String(new RegExp(req.query.data))
     } else {
@@ -24,8 +24,21 @@ router.get('/', async(req, res) => {
         })
     } catch {
         res.send('error ')
-    }
+    }*/
+    res.render('calendarioU/index')
 })
+
+router.get('/prenotazioni', async(req, res) => {
+    let so = {}
+    let prenotazioni
+
+    so.data = req.query.data || new Date().toISOString().slice(0, 10)
+    prenotazioni = await Prenotazione.find(so)
+
+    res.json({
+        prenotazione: prenotazioni,
+    })
+}) 
 
 router.post('/', async (req, res) => {
     const pren = new Prenotazione({

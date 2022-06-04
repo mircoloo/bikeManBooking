@@ -14,3 +14,5 @@ test('GET /calendario/May 30 should return reservation table row stef@gang.it - 
         .expect('Content-Type', /json/)
         .expect(200)
 })
+
+// da aggiungere test di creazione nuova prenotazione
