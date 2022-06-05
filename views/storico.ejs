@@ -36,7 +36,7 @@
     <td><%= p.bici %></td> 
     <% if(p.data > Date.now()){ %>
       <td>
-        <form method="POST" action="/storico/<%= p.data %>?_method=DELETE">
+        <form action="/storico/<%= p._id %>" method="POST">
           <button type="submit">Cancella</button>
         </form>
       </td>

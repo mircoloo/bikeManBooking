@@ -7,7 +7,7 @@ require('./scripts/dbConnection')
 const cookieParser = require('cookie-parser')
 const expressLayouts = require('express-ejs-layouts') 
 const jwt = require('./routes/jwt')
-const storicoRouter = require('./routes/storico')
+
 
 const port = process.env.PORT || 3000
 const app = express()
@@ -35,8 +35,10 @@ const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const profiloRouter = require('./routes/profilo');
 const calendarioRouter = require('./routes/calendario')
+const storicoRouter = require('./routes/storico')
 const {authenticateToken} = require('./routes/jwt')
 const {userAuth} = require('./routes/jwt')
+
 
 //ROUTES
 
@@ -50,6 +52,7 @@ app.use('/api/v1/users', usersRouter);
 app.use(userAuth)
 //routes che necessitano dell'autorizzazione del token per essere usate
 app.use('/storico', storicoRouter)
+
 app.use('/calendario', calendarioRouter)
 
 app.use('/profilo' , profiloRouter)

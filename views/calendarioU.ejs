@@ -1,81 +1,59 @@
-<style>
-    table {
-      font-family: arial, sans-serif;
-      border-collapse: collapse;
-      width: 80%;
-    }
-
-    header a:nth-child(1)::after{
-    display: none;
-}
-    header a:nth-child(2){
-    position: relative;
-}
-header a:nth-child(2)::after{
-    position: absolute;
-    content: "";
-    width: 60%;
-    height: 2px;
-    background-color: white;
-    left: 20%;
-    bottom: 3px;
-}
-
-header a:nth-child(2):hover::after{
-    animation: an 1s;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/public/stylesheets/calendar.css" />
+  <title>Calendario</title>
+</head>
+<body>
+  <div class="containter">
+    <div class="content">
+      <div class="displayer-prenotazioni">
+        <h1 class="title">Trova prenotazioni per giorno</h1><form action="/calendario" method="GET">
+          <label>Seleziona la data</label>
+          <input type="date" name="data" value="<%= searchOptions.data %>"></input> 
+          <button>Stampa prenotazioni</button>
+        
+          <table>    
+            <tr>
+            <th>Data prenotazione</th>
+            <th>Problema</th>
+            <th>Bici</th>    
+            </tr>
+          <% prenotazione.forEach( p => { %>
+            <tr>
+              <td><%= p.data.toString().substring(0,15) %></td>
+              <td><%= p.problema %></td>
+              <td><%= p.bici %></td> 
+            </tr>
+          <% }) %>
+        </table>
+      </div>
+      
+      <div class="creator-prenotazioni">
+      </form>
+      
+      
+      
+      <h1 class="title">Prenota la tua manutenzione</h1>
+      <form action="/calendario" method="POST">
+        <label>Data </label><input type="date" name="data" value="<%= nuovaPren.data %>"></input><br>
+        <label>Problema </label><input type="text" name="problema" value="<%= nuovaPren.problema%>"></input><br>
+        <label>Bici </label><input type="text" name="bici" value="<%= nuovaPren.bici%>"></input><br>
+        <a href="/calendario">Annulla</a>
+        <button type="submit">Crea prenotazione</button>
+      </form>
+      
+    </div>
+    </div>
     
-    td, th {
-      border: 1px solid #dddddd;
-      text-align: left;
-      padding: 8px;
-    }
-    
-    tr:nth-child(even) {
-      background-color: #dddddd;
-    }
-
-    hr {
-      width: 80%;
-      margin-left: 0
-    }
-</style>
+    </div>
+   
+</body>
+</html>
 
 
-<h2>Trova prenotazioni per giorno</h2>
-<form action="/calendario" method="GET">
-    <label>Seleziona la data</label>
-    <input type="date" name="data" value="<%= searchOptions.data %>"></input> 
-    <button>Stampa prenotazioni</button>
 
-    <hr>
-    <table>    
-      <tr>
-      <th>Data prenotazione</th>
-      <th>Problema</th>
-      <th>Bici</th>    
-      </tr>
-    <% prenotazione.forEach( p => { %>
-      <tr>
-        <td><%= p.data %></td>
-        <td><%= p.problema %></td>
-        <td><%= p.bici %></td> 
-      </tr>
-    <% }) %>
-  </table>
-
-</form>
-  
-<br><br>
-<hr>
-
-
-<h2>Prenota la tua manutenzione</h2>
-<form action="/calendario" method="POST">
-    <label>Data </label><input type="date" name="data" value="<%= nuovaPren.data %>"></input><br>
-    <label>Problema </label><input type="text" name="problema" value="<%= nuovaPren.problema%>"></input><br>
-    <label>Bici </label><input type="text" name="bici" value="<%= nuovaPren.bici%>"></input><br>
-    <a href="/calendario">Annulla</a>
-    <button type="submit">Crea prenotazione</button>
-</form>
 

@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
             so.data = so.data.startsWith('/') ? so.data.slice(1, ) : so.data
             const prenotazioni = await Prenotazione.find({data: so.data, utente: email}) 
     
-            
+            //console.log(so.data)
             res.render('calendarioU', { 
                 prenotazione : prenotazioni, 
                 searchOptions: so,
@@ -34,11 +34,13 @@ router.get('/', async (req, res) => {
         } catch {
             res.render('errors', {error: "Errore caricamento pagina"})
         }
+        //res.render('calendarioU');
     }
     
 })
 
 router.post('/', async (req, res) => {
+    
     const token = req.cookies.token
     const email = jwt.getPayload(token).email
     const pren = new Prenotazione({
@@ -47,6 +49,7 @@ router.post('/', async (req, res) => {
         problema: req.body.problema,
         bici: req.body.bici
     })
+
     try{
         const newPrenotazione = await pren.save()
         res.render('created' , { prenotazione : newPrenotazione})
@@ -86,6 +89,7 @@ async function getPrenotazioni(data, type) {
 }
 
 router.get('/prenotazioni', async (req, res) => {
+    
     const token = req.cookies.token
     const email = jwt.getPayload(token).email
     let sO = {}
@@ -101,8 +105,7 @@ router.get('/prenotazioni', async (req, res) => {
     } else {
         prenotazioni = await getPrenotazioni(d, "day")
     }
-
-    res.send({
+    res.json({
         prenotazione: prenotazioni,
         data: d
     })

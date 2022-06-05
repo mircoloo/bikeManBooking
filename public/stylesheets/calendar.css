@@ -43,3 +43,82 @@ table {
     } 
     
 }
+
+
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 80%;
+    }
+
+    header a:nth-child(1)::after{
+    display: none;
+}
+    header a:nth-child(2){
+    position: relative;
+}
+header a:nth-child(2)::after{
+    position: absolute;
+    content: "";
+    width: 60%;
+    height: 2px;
+    background-color: white;
+    left: 20%;
+    bottom: 3px;
+}
+
+header a:nth-child(2):hover::after{
+    animation: an 1s;
+}
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: white;
+    }
+
+    hr {
+      width: 80%;
+      margin-left: 0
+    }
+
+    .containter{
+      width: 100%;
+      height: auto;
+      background-size: cover;
+      background-position: center;
+      align-items: center;
+      justify-content: center;
+     
+      display: flex;
+      flex-direction: column;
+
+    }
+
+    .content{
+      background-color: #ff7782;
+      border-radius: .8rem;
+      padding: 2rem;
+    }
+
+    .displayer-prenotazioni {
+
+      padding: 1rem;
+    }
+    .displayer-prenotazioni *{
+      margin: .5rem;
+    }
+
+    .title{
+    }
+
+    .creator-prenotazioni {
+      padding: 1rem;
+    }
+    .creator-prenotazioni *{
+      margin: .5rem;
+    }

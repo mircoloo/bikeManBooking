@@ -1,5 +1,4 @@
 const express = require('express')
-const res = require('express/lib/response')
 const router = express.Router()
 const Prenotazione = require('../models/prenotazione')
 const jwt = require('./jwt')
@@ -14,24 +13,20 @@ router.get('/', async (req, res) => {
             prenotazione : prenot, 
             searchOptions: req.query
         })
+        //console.log(prenot)
     } catch {
         res.send('error ')
     }
 })
 
-router.delete('/:data', async (req, res) => {
-    let pren
+router.post('/:id', async (req, res) => {
+    let id = req.params.id
     try{  
-        pren = await Prenotazione.findOne(req.params)   
-
+        let pren = await Prenotazione.findOne({_id: id}) 
         await pren.remove()
         res.redirect('/storico')
-    } catch {
-        if(pren == null){
-            res.send('prenotazione vuota')
-        } else{
-            res.send('Prenotazione non eliminata')
-        }
+    } catch(err){
+        res.render("errors", {error: err})
     }
 })
 

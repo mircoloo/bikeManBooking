@@ -37,35 +37,42 @@ header a:nth-child(2):hover::after{
 }
 
 </style>
+
+<link rel="stylesheet" href="/public/stylesheets/calendar.css" />
 </head>
 
 <body onload="myFunction()">
-  <h2>Trova prenotazioni per giorno</h2>
-  <label>Seleziona la data</label>
-  <input type="date" name="data" value="" id="data"></input> 
-  <select id="type" name="type">
-    <option value="day" selected="selected">Giorno</option>
-    <option value="week">Settimana</option>
-    <option value="month">Mese</option>
-  </select>
-  <button onclick="go()">Stampa prenotazioni</button>
-  <h2>Storico manutenzioni</h2>
-  <button onclick="goPrev()" id="prev">Prev</button>
-  <button onclick="goNext()" id="next">Next</button>
+  <div class="container">
+    <div class="content">
+      <h1 class="title">Trova prenotazioni per giorno</h1>
+      <label>Seleziona la data</label>
+      <input type="date" name="data" value="" id="data"></input> 
+      <select id="type" name="type">
+        <option value="day" selected="selected">Giorno</option>
+        <option value="week">Settimana</option>
+        <option value="month">Mese</option>
+      </select>
+      <button onclick="go()">Stampa prenotazioni</button>
+      <h1 class="title">Storico manutenzioni</h1>
+      <button onclick="goPrev()" id="prev">Prev</button>
+      <button onclick="goNext()" id="next">Next</button>
+      
+      <table>
+        <thead>
+          <tr id="heading">
+          <th>Data prenotazione</th>
+          <th>Utente</th>
+          <th>Problema</th>
+          <th>Bici</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+        
+        </tbody>
+      </table>
+    </div>
+  </div>
   
-  <table>
-    <thead>
-      <tr id="heading">
-      <th>Data prenotazione</th>
-      <th>Utente</th>
-      <th>Problema</th>
-      <th>Bici</th>
-      </tr>
-    </thead>
-    <tbody id="tbody">
-    
-    </tbody>
-  </table>
   
   <script>
     function myFunction() {
