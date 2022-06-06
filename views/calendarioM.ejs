@@ -1,28 +1,28 @@
 <!-- PAGINA DALLA QUALE L'UTENTE SELEZIONA LA DATA-->
 <head>
-<style>
+  <style>
     table {
-      font-family: arial, sans-serif;
-      border-collapse: collapse;
-      width: 80%;
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 80%;
     }
-    
+
     td, th {
-      border: 1px solid #dddddd;
-      text-align: left;
-      padding: 8px;
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
     }
-    
+
     tr:nth-child(even) {
-      background-color: #dddddd;
+    background-color: #dddddd;
     }
     header a:nth-child(1)::after{
     display: none;
-}
+    }
     header a:nth-child(2){
     position: relative;
-}
-header a:nth-child(2)::after{
+    }
+    header a:nth-child(2)::after{
     position: absolute;
     content: "";
     width: 60%;
@@ -30,15 +30,15 @@ header a:nth-child(2)::after{
     background-color: white;
     left: 20%;
     bottom: 3px;
-}
+    }
 
-header a:nth-child(2):hover::after{
+    header a:nth-child(2):hover::after{
     animation: an 1s;
-}
+    }
 
-</style>
+  </style>
 
-<link rel="stylesheet" href="/public/stylesheets/calendar.css" />
+  <link rel="stylesheet" href="/public/stylesheets/calendar.css" />
 </head>
 
 <body onload="myFunction()">
@@ -46,7 +46,7 @@ header a:nth-child(2):hover::after{
     <div class="content">
       <h1 class="title">Trova prenotazioni per giorno</h1>
       <label>Seleziona la data</label>
-      <input type="date" name="data" value="" id="data"></input> 
+      <input type="date" name="data" value="" id="data"></input>
       <select id="type" name="type">
         <option value="day" selected="selected">Giorno</option>
         <option value="week">Settimana</option>
@@ -56,88 +56,88 @@ header a:nth-child(2):hover::after{
       <h1 class="title">Storico manutenzioni</h1>
       <button onclick="goPrev()" id="prev">Prev</button>
       <button onclick="goNext()" id="next">Next</button>
-      
+
       <table>
         <thead>
           <tr id="heading">
-          <th>Data prenotazione</th>
-          <th>Utente</th>
-          <th>Problema</th>
-          <th>Bici</th>
+            <th>Data prenotazione</th>
+            <th>Utente</th>
+            <th>Problema</th>
+            <th>Bici</th>
           </tr>
         </thead>
         <tbody id="tbody">
-        
+
         </tbody>
       </table>
     </div>
   </div>
-  
-  
+
+
   <script>
     function myFunction() {
-      let d = new Date().toISOString().slice(0,10)
-      document.getElementById("data").value = d
-      document.getElementById("type").value  = "day"
-      loadPren(d, "day")
+    let d = new Date().toISOString().slice(0,10)
+    document.getElementById("data").value = d
+    document.getElementById("type").value  = "day"
+    loadPren(d, "day")
     }
     function goPrev() {
-      let m = new Date(document.getElementById("data").value)
-      m.setDate(m.getDate()-1)
-      document.getElementById("data").value = m.toISOString().slice(0,10)
-      go()
+    let m = new Date(document.getElementById("data").value)
+    m.setDate(m.getDate()-1)
+    document.getElementById("data").value = m.toISOString().slice(0,10)
+    go()
     }
     function goNext() {
-      let m = new Date(document.getElementById("data").value)
-      m.setDate(m.getDate()+1)
-      document.getElementById("data").value = m.toISOString().slice(0,10)
-      go()
+    let m = new Date(document.getElementById("data").value)
+    m.setDate(m.getDate()+1)
+    document.getElementById("data").value = m.toISOString().slice(0,10)
+    go()
     }
     function go() {
-      let d = document.getElementById("data").value
-      let t = document.getElementById("type").value
-      
-      document.getElementById("tbody").innerHTML = ""
-      loadPren(d, t)
+    let d = document.getElementById("data").value
+    let t = document.getElementById("type").value
+
+    document.getElementById("tbody").innerHTML = ""
+    loadPren(d, t)
     }
     function loadPren(day, type) {
-      const heading = document.getElementById('tbody')
-      const list = document.createDocumentFragment()
-      
-      getData(`/calendario/prenotazioni?data=${day}&type=${type}`).then((v) => { //
-        v.prenotazione.map(function(p) {
-          tr = document.createElement('tr')
-          data = document.createElement('td')
-          utente = document.createElement('td')
-          problema = document.createElement('td')
-          bici = document.createElement('td')
-          
-          tr.setAttribute("name", "pren")
-          data.innerHTML = `${p.data.slice(0,10)}`
-          utente.innerHTML = `${p.utente}`
-          problema.innerHTML = `${p.problema}`
-          bici.innerHTML = `${p.bici}`
-          
-          tr.appendChild(data)
-          tr.appendChild(utente)
-          tr.appendChild(problema)
-          tr.appendChild(bici)
-          
-          list.appendChild(tr)
-        })
+    const heading = document.getElementById('tbody')
+    const list = document.createDocumentFragment()
 
-        document.getElementById("data").value = day
-        heading.appendChild(list)
-      })
-      .catch(function(error) {
-        console.log(error)
-      })
+    getData(`/calendario/prenotazioni?data=${day}&type=${type}`).then((v) => { //
+    v.prenotazione.map(function(p) {
+    tr = document.createElement('tr')
+    data = document.createElement('td')
+    utente = document.createElement('td')
+    problema = document.createElement('td')
+    bici = document.createElement('td')
+
+    tr.setAttribute("name", "pren")
+    data.innerHTML = `${p.data.slice(0,10)}`
+    utente.innerHTML = `${p.utente}`
+    problema.innerHTML = `${p.problema}`
+    bici.innerHTML = `${p.bici}`
+
+    tr.appendChild(data)
+    tr.appendChild(utente)
+    tr.appendChild(problema)
+    tr.appendChild(bici)
+
+    list.appendChild(tr)
+    })
+
+    document.getElementById("data").value = day
+    heading.appendChild(list)
+    })
+    .catch(function(error) {
+    console.log(error)
+    })
     }
     async function getData(url) {
-      const res = await fetch(url)
-      const data = await res.json()
-      
-      return data
+    const res = await fetch(url)
+    const data = await res.json()
+
+    return data
     }
   </script>
 </body>

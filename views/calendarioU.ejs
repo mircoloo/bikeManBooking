@@ -7,44 +7,118 @@
   <link rel="stylesheet" href="/public/stylesheets/calendar.css" />
   <title>Calendario</title>
 </head>
+<script type="text/javascript">
+  function load() {
+    let d = new Date()
+    document.getElementById("data").value = d.toISOString().slice(0,10)
+    d.setDate(d.getDate()+1)
+    document.getElementById("nuovaP").defaultValue = d.toISOString().slice(0,10)
+    document.getElementById("nuovaP").min = d.toISOString().slice(0,10)
+    loadPren(new Date().toISOString().slice(0,10))
+  }
+  window.onload = load;
+  
+  function goPrev() {
+    let m = new Date(document.getElementById("data").value)
+    m.setDate(m.getDate()-1)
+    document.getElementById("data").value = m.toISOString().slice(0,10)
+    
+    document.getElementById("tbody").innerHTML = ""
+    loadPren(m.toISOString().slice(0,10))
+  }
+  function goNext() {
+    let m = new Date(document.getElementById("data").value)
+    m.setDate(m.getDate()+1)
+    document.getElementById("data").value = m.toISOString().slice(0,10)
+    
+    document.getElementById("tbody").innerHTML = ""
+    loadPren(m.toISOString().slice(0,10))
+  }
+  
+  function loadPren(day) {
+    const heading = document.getElementById('tbody')
+    const list = document.createDocumentFragment()
+      
+    getData(`calendario/prenotazioni?data=${day}`).then((v) => {
+      v.prenotazione.map(function(p) {
+        tr = document.createElement('tr')
+        data = document.createElement('td')
+        utente = document.createElement('td')
+        problema = document.createElement('td')
+        bici = document.createElement('td')
+          
+        data.innerHTML = `${p.data.slice(0,10)}`
+        utente.innerHTML = `${p.utente}`
+        problema.innerHTML = `${p.problema}`
+        bici.innerHTML = `${p.bici}`
+          
+        tr.appendChild(data)
+        tr.appendChild(utente)
+        tr.appendChild(problema)
+        tr.appendChild(bici)
+          
+        list.appendChild(tr)
+      })
+
+      document.getElementById("utente").value = v.utente
+      heading.appendChild(list)
+    })
+    .catch(function(error) {
+      console.log(error)
+    })
+  }
+  async function getData(url) {
+    const res = await fetch(url)
+    const data = await res.json()
+      
+    return data
+  }
+</script>
 <body>
   <div class="containter">
     <div class="content">
       <div class="displayer-prenotazioni">
-        <h1 class="title">Trova prenotazioni per giorno</h1><form action="/calendario" method="GET">
+        <h1 class="title">Trova prenotazioni per giorno</h1>
           <label>Seleziona la data</label>
-          <input type="date" name="data" value="<%= searchOptions.data %>"></input> 
-          <button>Stampa prenotazioni</button>
+          <input type="date" name="data" value="" id="data"></input> 
+          <button onclick="go()">Stampa prenotazioni</button>
         
-          <table>    
-            <tr>
-            <th>Data prenotazione</th>
-            <th>Problema</th>
-            <th>Bici</th>    
-            </tr>
-          <% prenotazione.forEach( p => { %>
-            <tr>
-              <td><%= p.data.toString().substring(0,15) %></td>
-              <td><%= p.problema %></td>
-              <td><%= p.bici %></td> 
-            </tr>
-          <% }) %>
-        </table>
+          <button onclick="goPrev()" id="prev">Giorno precedente</button>
+          <button onclick="goNext()" id="next">Prossimo giorno</button>
+
+          <table>
+              <thead>
+                <tr>
+                  <th>Data prenotazione</th>
+                  <th>Utente</th>
+                  <th>Problema</th>
+                  <th>Bici</th>
+                </tr>
+              </thead>
+              <tbody id="tbody"></tbody>
+            </table>
       </div>
       
       <div class="creator-prenotazioni">
-      </form>
-      
-      
       
       <h1 class="title">Prenota la tua manutenzione</h1>
-      <form action="/calendario" method="POST">
-        <label>Data </label><input type="date" name="data" value="<%= nuovaPren.data %>"></input><br>
-        <label>Problema </label><input type="text" name="problema" value="<%= nuovaPren.problema%>"></input><br>
-        <label>Bici </label><input type="text" name="bici" value="<%= nuovaPren.bici%>"></input><br>
-        <a href="/calendario">Annulla</a>
-        <button type="submit">Crea prenotazione</button>
-      </form>
+      <h2>Prenota la tua manutenzione</h2>
+        <form action="/calendario" method="POST">
+            <label>Data </label>
+            <input type="date" name="data" value="" id="nuovaP"></input>
+            <br>
+            <label>Utente </label>
+            <input type="text" name="utente" value="" id="utente" required readonly></input>
+            <br>
+            <label>Problema </label>
+            <input type="text" name="problema" value="" required></input>
+            <br>
+            <label>Bici </label>
+            <input type="text" name="bici" value="" ></input>
+            <br>
+            <button type="reset">Annulla</button>
+            <button type="submit">Crea prenotazione</button>
+        </form>
       
     </div>
     </div>

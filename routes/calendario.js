@@ -9,56 +9,42 @@ const jwt = require('./jwt')
 router.get('/', async (req, res) => {
     const token = req.cookies.token
     const email = jwt.getPayload(token).email
-    const user =  await User.findOne({email: email})
-    //console.log(user, email) 
-    if(user.client == false){ //calendario meccanico
-        res.render('calendarioM')
-    }else{ //calendario Utente
-        let so = {}
-        if(req.query.data != null && req.query.data !== ''){
-            so.data = String(new RegExp(req.query.data))
+    const user = await User.findOne({ email: email })
+
+    try {
+        if (user.client == false) {
+            //calendario meccanico
+            res.render('calendarioM')
         } else {
-            so.data = new Date().toISOString().slice(0,10)
+            //calendario Utente
+            res.render('calendarioU')
         }
-        try{
-            so.data = so.data.endsWith('/') ? so.data.slice(0, -1) : so.data
-            so.data = so.data.startsWith('/') ? so.data.slice(1, ) : so.data
-            const prenotazioni = await Prenotazione.find({data: so.data, utente: email}) 
-    
-            //console.log(so.data)
-            res.render('calendarioU', { 
-                prenotazione : prenotazioni, 
-                searchOptions: so,
-                nuovaPren: new Prenotazione()
-            })
-        } catch {
-            res.render('errors', {error: "Errore caricamento pagina"})
-        }
-        //res.render('calendarioU');
+    } catch {
+        res.render('errors', { error: "Errore caricamento pagina" })
     }
-    
+
 })
 
 router.post('/', async (req, res) => {
-    
+
     const token = req.cookies.token
     const email = jwt.getPayload(token).email
-    const pren = new Prenotazione({
-        data: req.body.data,
-        utente: email,
-        problema: req.body.problema,
-        bici: req.body.bici
-    })
 
-    try{
+    try {
+        const pren = new Prenotazione({
+            data: req.body.data,
+            utente: email,
+            problema: req.body.problema,
+            bici: req.body.bici
+        })
         const newPrenotazione = await pren.save()
-        res.render('created' , { prenotazione : newPrenotazione})
+        res.render('created', { prenotazione: newPrenotazione })
     } catch {
-        res.render('errors', {error: "Errore creazione"})
+        res.status(400).render('errors', { error: "Errore creazione" })
     }
 })
 
-async function getPrenotazioni(data, type) {
+async function getPrenotazioni(data, type, email) {
     let sO = {}
     switch (type) {
         case "day":
@@ -85,30 +71,42 @@ async function getPrenotazioni(data, type) {
     }
 
     // filtra sulla data
+    if (email) {
+        sO.utente = email
+    }
     return await Prenotazione.find(sO)
 }
 
 router.get('/prenotazioni', async (req, res) => {
-    
+
     const token = req.cookies.token
     const email = jwt.getPayload(token).email
+
     let sO = {}
     let d = ""
     let prenotazioni
-    if (req.query.data != null && req.query.data !== '') {
-        d = String(req.query.data)
+    d = req.query.data || new Date().toISOString().slice(0, 10)
+
+    const user = await User.findOne({ email: email })
+    if (user.client == false) {
+        if (req.query.type != null && req.query.type !== '') {
+            prenotazioni = await getPrenotazioni(d, req.query.type)
+        } else {
+            prenotazioni = await getPrenotazioni(d, "day")
+        }
+        res.json({
+            prenotazione: prenotazioni,
+        })
     } else {
-        d = new Date().toISOString().slice(0, 10)
+        prenotazioni = await getPrenotazioni(d, "day", user.email)
+        res.json({
+            prenotazione: prenotazioni,
+            utente: email
+        })
     }
-    if (req.query.type != null && req.query.type !== '') {
-        prenotazioni = await getPrenotazioni(d, req.query.type)
-    } else {
-        prenotazioni = await getPrenotazioni(d, "day")
-    }
-    res.json({
-        prenotazione: prenotazioni,
-        data: d
-    })
 })
 
-module.exports = router
+module.exports = {
+    router,
+    getPrenotazioni,
+}
