@@ -9,7 +9,7 @@ const expressLayouts = require('express-ejs-layouts')
 const jwt = require('./routes/jwt')
 
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8080
 const app = express()
 
 //MIDDLEWARES
