@@ -13,7 +13,33 @@
     
     tr:nth-child(even) {
       background-color: #dddddd;
+
+      
     }
+
+header a:nth-child(2)::after{
+    display: none;
+}
+
+header a:nth-child(1){
+    position: relative;
+}
+header a:nth-child(1)::after{
+    position: absolute;
+    content: "";
+    width: 60%;
+    height: 2px;
+    background-color: white;
+    left: 20%;
+    bottom: 3px;
+}
+
+header a:nth-child(1):hover::after{
+    animation: an 1s;
+}
+
+
+
 </style>
 <link rel="stylesheet" href="/public/stylesheets/calendar.css" />
 </head>
