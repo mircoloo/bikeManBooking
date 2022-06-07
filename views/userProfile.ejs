@@ -43,7 +43,7 @@
               placeholder="cognome"
             />
             <div class="buttons">
-              <button id="info-modify-btn" class="btn modify-btn from-left">Modifica</button>
+              <button id="info-modify-btn" class="btn modify-btn from-left" onclick="show()">Modifica</button>
               <button id="info-confirm-btn" class="btn confirm-btn from-left">Conferma</button>
             </div>
             <!-- <a href="/storico">Storico prenotazioni</a> -->
@@ -124,11 +124,17 @@
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script>
-    
+    function show(){
+      console.log("premuto")
+      document.getElementById("#info-modify-btn").style.display = "none"
+
+    }
       const queryParams = new URL(document.URL).searchParams;
+      document.getElementById("#info-modify-btn").click();
   
-  //====================JQUERY===================
   $(document).ready(function () {
+
+
     $("#info-modify-btn").click(() => {
       $(".update-info").css({ visibility: "visible" });
       $("#info-confirm-btn").css({ visibility: "visible" });
@@ -162,6 +168,7 @@
   
   
       let email = $("#email-span").text();
+      //Ajax request to the API to update the datas
       $.ajax({
         url: "/api/v1/users/" + email,
         type: "PUT",
@@ -169,8 +176,8 @@
         dataType: "json",
         success: () => {},
         error: function(xhr, status, error) {
-          console.log(error)
-     }
+          console.log("Errore: " + error)
+        }
       });
    
       $(".update-info").css({ visibility: "hidden" });
