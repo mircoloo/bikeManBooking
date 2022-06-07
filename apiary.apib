@@ -6,7 +6,7 @@ info:
   license:
     name: MIT
 servers:
-  - url: http://localhost:8000/api/v1
+  - url: http://localhost:3000
     description: Localhost
 paths:
   /storico:
@@ -23,7 +23,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Prenotazione'
-    delete:
+    post:
       description: >-
         Elimina la prenotazione futura selezionata dall'utente
       summary: Elimina la prenotazione selezionata
@@ -37,14 +37,14 @@ paths:
                   items:
                     $ref: '#/components/schemas/Prenotazione'
           
-  /calendarioU:
+  /calendario:
     get:
       description: >-
-        Mostra il calendario per l'utente
-      summary:  Mostra il calendario per l'utente
+        Mostra il calendario
+      summary:  Mostra il calendario
       responses:
         '200':
-          description: "Mostra calendario utente per l'utente"
+          description: "Mostra calendario"
           content:
             application/json:
               schema:
@@ -53,7 +53,7 @@ paths:
                   $ref: '#/components/schemas/Prenotazione'
     post:
       description: >-
-        Crea una nuova prenotazione
+        Crea una nuova prenotazione (solo per clienti)
       summary: Crea una nuova prenotazione
       responses:
         '201':
@@ -67,69 +67,44 @@ paths:
         '502':
           description: 'Prenotazione non effetutata: uno o più parametri non sono validi'
           
-  /calendarioM:
+  /calendario/prenotazioni:
     get:
       description: >-
-        Mostra il calendario per il meccanico
-      summary: Mostra il calendario per il meccanico
+        Mostra le prenotazioni per giorno, settimana o mese in base alla selezione dell'utente
+      summary: Mostra le prenotazioni per giorno, settimana o mese
       responses:
         '200':
-          description: "Mostra calendario utente per l'utente"
+          description: "Mostra calendario le prenotazioni per giorno, settimana o mese in base alla selezione dell'utente"
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Prenotazione'
-  /profiloM:
+  /profilo:
     get:
       description: >-
-        Mostra le informazione di base dell'officina, quali numero di telefono e email, indirizzo, ecc..
-      summary: Mostra le informazione di base dell'officina 
+        Mostra le informazione di base del profilo, quali numero di telefono e email, indirizzo, ecc..
+      summary: Mostra le informazione di base del profilo
       responses:
         '200':
-          description: "Mostra il profilo dell'officina"
+          description: "Mostra le informazione di base del profilo, quali numero di telefono e email, indirizzo, ecc.."
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Utente'
-    put:
-      description: >-
-        Aggiorna le informazioni di base dell'officina
-      summary: Aggiorna le informazioni base dell'officina
-      responses:
-        '200':
-          description: "Mostra il profilo dell'officina"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Utente'
-    post:
-      description: >-
-        Crea un nuovo profilo meccanico
-      summary: Crea un nuovo profilo meccanico
-      responses:
-        '201':
-          description: 'Crea un nuovo profilo meccanico'
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Utente'
+
   
-  /profiloU:
+  /users:
     get:
       description: >-
-        Mostra le informazione di base dell'utente, quali numero di telefono e email
-      summary: Mostra le informazione di base dell'utente 
+        Ritorna le informazioni del profilo in formato json
+      summary: Ritorna le informazioni del profilo in formato json
       responses:
         '200':
-          description: "Mostra il profilo dell'utente"
+          description: "Ritorna le informazioni del profilo in formato json"
           content:
             application/json:
               schema:
@@ -138,11 +113,11 @@ paths:
                   $ref: '#/components/schemas/Utente'
     put:
       description: >-
-        Aggiorna le informazioni di base dell'utente
-      summary: Aggiorna le informazioni base dell'utente
+        Aggiorna le informazioni del profilo
+      summary: Aggiorna le informazioni del profilo
       responses:
         '201':
-          description: "Mostra il profilo dell'utente"
+          description: "Aggiorna le informazioni del profilo"
           content:
             application/json:
               schema:
@@ -151,11 +126,24 @@ paths:
                   $ref: '#/components/schemas/Utente'
     post:
       description: >-
-        Crea un nuovo profilo utente
-      summary: Crea un nuovo profilo utente
+        Inserisce nel db le informazioni di un nuovo profilo
+      summary: Inserisce nel db le informazioni di un nuovo profilo
       responses:
         '201':
-          description: 'Crea un nuovo profilo utente'
+          description: 'Inserisce nel db le informazioni di un nuovo profilo'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Utente'
+    delete:
+      description: >-
+        Elimina il profilo
+      summary: Elimina il profilo
+      responses:
+        '201':
+          description: 'Elimina il profilo'
           content:
             application/json:
               schema:
