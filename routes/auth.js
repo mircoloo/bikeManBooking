@@ -22,10 +22,10 @@ router.post('/', async (req, res) => {
                 let payload = jwt.getPayload(token);
                 if(user.client == true){
                     //res.render("userProfile", {user: user});
-                    res.redirect("/profilo").cookie('token', token).status(200)
+                    res.cookie('token', token).status(200).redirect("/profilo")
                 }else if(user.client == false){
                     //res.render("mecProfile", {user: user});
-                    res.redirect("/profilo").cookie('token', token).status(200)
+                    res.cookie('token', token).status(200).redirect("/profilo")
                 }else{
                     res.status(401).render('login', {error: "Credenziali non valide"})
                     //res.render('errors', {error: "Si è verificato un errore nel login"})
