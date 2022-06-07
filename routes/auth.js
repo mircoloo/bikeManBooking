@@ -23,16 +23,16 @@ router.post('/', async (req, res) => {
                 let payload = jwt.getPayload(token);
                 if(user.client == true){
                     //res.render("userProfile", {user: user});
-                    res.cookie('token', token).redirect("/profilo")
+                    res.cookie('token', token).redirect(200, "/profilo")
                 }else if(user.client == false){
                     //res.render("mecProfile", {user: user});
-                    res.cookie('token', token).redirect("/profilo")
+                    res.cookie('token', token).redirect(200, "/profilo")
                 }else{
-                    res.render('login', {error: "Credenziali non valide"})
+                    res.status(401).render('login', {error: "Credenziali non valide"})
                     //res.render('errors', {error: "Si è verificato un errore nel login"})
                   }
             }else{
-                res.render('login', {error: "Credenziali non valide"})
+                res.status(401).render('login', {error: "Credenziali non valide"})
             }
             break;
         case 'Registrati':      //CASO IN CUI L'UTENTE VUOLE REGISTRARSI
@@ -62,11 +62,11 @@ router.post('/', async (req, res) => {
                 //res.render("userProfile", {user: newUser});
                 res.cookie('token', token).redirect("/profilo")
                 }else{
-                    res.render('login', {error: "Password troppo corta"})
+                    res.status(400).render('login', {error: "Password troppo corta"})
                 }
                 
             }else{
-                res.render('login', {error: "Email già presente"})
+                res.status(400).render('login', {error: "Email già presente"})
             }
             break;
     }   

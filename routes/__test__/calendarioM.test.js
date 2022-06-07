@@ -2,19 +2,28 @@ const pren = require('../calendario').getPrenotazioni
 const app = require('../calendario').router
 const request = require('supertest')
 const mongoose = require('mongoose')
+const fetch = require('node-fetch')
+const jwt = require('../jwt')
 
-describe('GET ', () => {
+describe('GET app server must be running', () => {
+    let baseUrl = 'http://localhost:3000'
 
-    let connection
-    beforeAll(async () => {
-        jest.setTimeout(8000)
-        connection = await mongoose.connect(process.env.DATABASE_URL)
-    });
-    afterAll(() => { mongoose.connection.close(true) })
+    let token = jwt.setToken('meccanico@email.it')
+    const opts = {
+        headers: {
+            cookie: 'token=' + token + ';'
+        }
+    }
 
-    test('GET getPrenotazioni should three items on 2022-05-29', async () => {
-        const response = await pren('2022-05-29', 'day')
-        expect(response.length).toBe(3)
+    test('GET getPrenotazioni should return three items on 2022-05-29', async () => {
+        await fetch(baseUrl + '/calendario/prenotazioni?data=2022-05-29', opts)
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                expect(data.prenotazione.length).toEqual(3)
+            })
+
     })
 })
 
