@@ -59,7 +59,7 @@ router.post('/', async (req, res) => {
                 })
                 const newUser = await user.save();
                 //res.render("userProfile", {user: newUser});
-                res.cookie('token', token).redirect("/profilo")
+                res.cookie('token', token).redirect("/profilo").status(200)
                 }else{
                     res.status(400).render('login', {error: "Password troppo corta"})
                 }
