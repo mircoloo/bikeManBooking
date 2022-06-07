@@ -34,6 +34,13 @@
     document.getElementById("tbody").innerHTML = ""
     loadPren(m.toISOString().slice(0,10))
   }
+
+  function go() {
+    let d = document.getElementById("data").value
+
+    document.getElementById("tbody").innerHTML = ""
+    loadPren(d)
+    }
   
   function loadPren(day) {
     const heading = document.getElementById('tbody')
@@ -43,24 +50,21 @@
       v.prenotazione.map(function(p) {
         tr = document.createElement('tr')
         data = document.createElement('td')
-        utente = document.createElement('td')
         problema = document.createElement('td')
         bici = document.createElement('td')
           
         data.innerHTML = `${p.data.slice(0,10)}`
-        utente.innerHTML = `${p.utente}`
         problema.innerHTML = `${p.problema}`
         bici.innerHTML = `${p.bici}`
           
         tr.appendChild(data)
-        tr.appendChild(utente)
         tr.appendChild(problema)
         tr.appendChild(bici)
           
         list.appendChild(tr)
       })
 
-      document.getElementById("utente").value = v.utente
+      
       heading.appendChild(list)
     })
     .catch(function(error) {
