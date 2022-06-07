@@ -45,7 +45,6 @@ const {userAuth} = require('./routes/jwt')
 app.use('/', indexRouter)
 
 app.use('/api/v1/authenticate', authRouter);
-
 //API router
 app.use('/api/v1/users', usersRouter);
 
@@ -56,9 +55,6 @@ app.use('/storico', storicoRouter)
 app.use('/calendario', calendarioRouter)
 
 app.use('/profilo' , profiloRouter)
-
-
-
 
 app.use( (req, res) =>{
     res.status(404).render('errors', {error: "Pagina non trovata"});

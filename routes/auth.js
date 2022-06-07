@@ -10,7 +10,6 @@ router.use(bodyParser.urlencoded({extended: true}));
 
 
 router.post('/', async (req, res) => {
-    //console.log(req.body)
     let user;
     let email = req.body.email
     let password = req.body.password
@@ -23,10 +22,10 @@ router.post('/', async (req, res) => {
                 let payload = jwt.getPayload(token);
                 if(user.client == true){
                     //res.render("userProfile", {user: user});
-                    res.cookie('token', token).redirect(200, "/profilo")
+                    res.redirect("/profilo").cookie('token', token).status(200)
                 }else if(user.client == false){
                     //res.render("mecProfile", {user: user});
-                    res.cookie('token', token).redirect(200, "/profilo")
+                    res.redirect("/profilo").cookie('token', token).status(200)
                 }else{
                     res.status(401).render('login', {error: "Credenziali non valide"})
                     //res.render('errors', {error: "Si è verificato un errore nel login"})
